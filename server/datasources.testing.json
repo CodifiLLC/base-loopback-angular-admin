@@ -1,0 +1,5 @@
+{
+  "persistent": {
+    "connector": "memory"
+  }
+}

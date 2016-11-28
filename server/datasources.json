@@ -1,0 +1,16 @@
+{
+  "db": {
+    "name": "db",
+    "connector": "memory"
+  },
+  "persistent": {
+    "host": "localhost",
+    "port": 0,
+    "url": "",
+    "database": "echo",
+    "password": "I thought it smelled bad on the outside",
+    "name": "persistent",
+    "user": "tauntaun",
+    "connector": "mysql"
+  }
+}
