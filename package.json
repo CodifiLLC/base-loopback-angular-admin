@@ -5,6 +5,7 @@
   "scripts": {
     "lint": "eslint .",
     "start": "node .",
+    "dev": "node-dev .",
     "posttest": "npm run lint && nsp check"
   },
   "dependencies": {
@@ -20,6 +21,7 @@
     "strong-error-handler": "^1.0.1"
   },
   "devDependencies": {
+    "node-dev": "^3.1.3",
     "eslint": "^2.13.1",
     "eslint-config-loopback": "^4.0.0",
     "nsp": "^2.1.0"
