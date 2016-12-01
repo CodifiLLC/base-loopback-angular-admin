@@ -16,7 +16,6 @@
    </code>
  **/
 
-'use strict';
 module.exports = function(Model, options) {
 	if (Model && Model.sharedClass) {
 		//get the list of relations and / or methods to leave exposed
