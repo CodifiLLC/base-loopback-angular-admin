@@ -1,0 +1,60 @@
+<section>
+  <form action="/login" method="post">
+    <fieldset>
+      <legend>Login form</legend>
+      <div>
+        <label for="login-email">Email:</label>
+        <input type="text" id="login-email" name="email" value="<%= email %>"/>
+      </div>
+      <div>
+        <label for="login-password">Password:</label>
+        <input type="password" id="login-password" name="password" />
+      </div>
+      <div>
+        <input type="submit" value="Login"/>
+      </div>
+    </fieldset>
+  </form>
+</section>
+
+<section>
+  <form action="/api/CustomUsers" method="post">
+    <fieldset>
+      <legend>Sign up form</legend>
+      <div>
+        <label for="first-name">First Name:</label>
+        <input id="first-name" type="text" name="firstName" />
+      </div>
+      <div>
+        <label for="last-name">Last Name:</label>
+        <input id="last-name" type="text" name="lastName"/>
+      </div>
+      <div>
+        <label for="email">Email:</label>
+        <input type="text" name="email" value="<%= email %>"/>
+      </div>
+      <div>
+        <label for="password">Password:</label>
+        <input type="password" name="password" />
+      </div>
+      <div>
+        <input type="submit" value="Sign up"/>
+      </div>
+    </fieldset>
+  </form>
+</section>
+
+<section>
+  <form action="/request-password-reset" method="post">
+    <fieldset>
+      <legend>Reset password form</legend>
+      <div>
+        <label for="email">Email:</label>
+        <input type="text" name="email" value="<%= email %>"/>
+      </div>
+      <div>
+        <input type="submit" value="Reset password"/>
+      </div>
+    </fieldset>
+  </form>
+</section>

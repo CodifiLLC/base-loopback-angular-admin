@@ -36,7 +36,10 @@
     "loopback#token": {},
     "./middleware/current-user": {}
   },
-  "parse": {},
+  "parse": {
+    "body-parser#json": {},
+    "body-parser#urlencoded": {"params": { "extended": true }}
+  },
   "routes": {
     "loopback#rest": {
       "paths": [

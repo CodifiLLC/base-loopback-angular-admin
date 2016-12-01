@@ -1,4 +1,3 @@
-'use strict';
 module.exports = function enableAuthentication(app) {
 	//lookup the datasource that we want to persist
 	const dataSource = app.datasources.persistent;

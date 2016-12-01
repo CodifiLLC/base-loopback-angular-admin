@@ -25,6 +25,9 @@
     "dataSource": "db",
     "public": false
   },
+  "Email": {
+    "dataSource": "emailDs"
+  },
   "RoleMapping": {
     "dataSource": "persistent",
     "public": true
@@ -35,6 +38,9 @@
   },
   "CustomUser": {
     "dataSource": "persistent",
-    "public": true
+    "public": true,
+    "options": {
+      "emailVerificationRequired": true
+    }
   }
 }

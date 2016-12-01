@@ -1,6 +1,4 @@
-'use strict';
 module.exports = function preloadData(app) {
-
 	const CustomUser = app.models.CustomUser;
 	const Role = app.models.Role;
 	const RoleMapping = app.models.RoleMapping;
@@ -9,24 +7,27 @@ module.exports = function preloadData(app) {
 		if (process.env.NODE_ENV !== 'testing') {
 			CustomUser.find().then(users => {
 				if (!users || !users.length) {
-					console.log('No users found. Creating admin.')
+					console.log('No users found. Creating admin.');
 					const defaultAdmin = {
 						username: 'administrator',
 						email: 'admin@codifi.us',
 						firstName: 'Site',
 						lastName: 'Admin',
-						password: require('crypto').randomBytes(8).toString('hex')
+						password: require('crypto').randomBytes(8)
+									.toString('hex'),
 					};
 					CustomUser.create(defaultAdmin)
 					.then(user => {
 						//make the user an admin
 						return role.principals.create({
 							principalType: RoleMapping.USER,
-							principalId: user.id
+							principalId: user.id,
 						});
 					})
 					.then(user => {
-						console.log(`Admin created with username '${defaultAdmin.username}' and password '${defaultAdmin.password}'`);
+						console.log("Admin created with username '"  +
+							defaultAdmin.username + "' and password '" +
+							defaultAdmin.password + "'");
 					});
 				}
 			});
@@ -64,8 +65,6 @@ module.exports = function preloadData(app) {
 				},
 			], (err, users) => {
 				if (err) console.log('user create err', err);
-				// console.log('created users', err, users);
-
 			});
 		}
 	});
