@@ -6,37 +6,9 @@
 module.exports = function(app) {
 	var User = app.models.CustomUser;
 
-	//login page
-	app.get('/', function(req, res) {
-		res.render('login', {email: req.query.email || ''});
-	});
-
 	//verified
 	app.get('/verified', function(req, res) {
 		res.render('verified', {});
-	});
-
-	//log a user in
-	app.post('/login', function(req, res) {
-		User.login({
-			email: req.body.email,
-			password: req.body.password,
-		}, 'user', function(err, token) {
-			if (err) {
-				res.render('response', {
-					title: 'Login failed',
-					content: err,
-					redirectTo: `/?email=${req.body.email}`,
-					redirectToLinkText: 'Try again',
-				});
-				return;
-			}
-
-			res.render('home', {
-				email: req.body.email,
-				accessToken: token.id,
-			});
-		});
 	});
 
 	//log a user out

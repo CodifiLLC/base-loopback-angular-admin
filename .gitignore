@@ -17,3 +17,35 @@
 coverage
 node_modules
 npm-debug.log
+
+# compiled output
+/client/dist
+/client/tmp
+
+# dependencies
+/client/bower_components
+
+# IDEs and editors
+/.idea
+/.vscode
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+
+# misc
+/client/.sass-cache
+/client/connect.lock
+/client/coverage/*
+/client/libpeerconnection.log
+/client/testem.log
+/client/typings
+
+# e2e
+/client/e2e/*.js
+/client/e2e/*.map
+
+#System Files
+.DS_Store
+Thumbs.db
