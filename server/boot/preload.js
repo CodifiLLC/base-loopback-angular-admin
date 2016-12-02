@@ -15,6 +15,7 @@ module.exports = function preloadData(app) {
 						lastName: 'Admin',
 						password: require('crypto').randomBytes(8)
 									.toString('hex'),
+						emailVerified: true,
 					};
 					CustomUser.create(defaultAdmin)
 					.then(user => {
