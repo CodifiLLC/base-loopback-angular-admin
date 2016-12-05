@@ -1,4 +1,6 @@
+import { Router } from "@angular/router";
 import { Component } from '@angular/core';
+import { CustomUserApi } from './shared/sdk/services/custom';
 
 @Component({
   selector: 'app-root',
@@ -7,6 +9,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app works!';
+
+  constructor(private userApi: CustomUserApi, private router: Router) { }
+
+  ngOnInit() {}
 
   isSuperuser () {
     return false;
