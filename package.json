@@ -4,6 +4,7 @@
   "main": "server/server.js",
   "angular-cli": {},
   "scripts": {
+    "build:sdk": "./node_modules/.bin/lb-sdk server/server.js client/src/app/shared/sdk",
     "lint": "eslint . && tslint \"client/src/**/*.ts\"",
     "start": "ng build && node .",
     "dev": "ng serve & node-dev .",
@@ -38,6 +39,7 @@
   },
   "devDependencies": {
     "@angular/compiler-cli": "2.2.1",
+    "@mean-expert/loopback-sdk-builder": "^2.1.0-rc.2",
     "@types/jasmine": "^2.5.38",
     "@types/node": "^6.0.42",
     "angular-cli": "1.0.0-beta.21",
