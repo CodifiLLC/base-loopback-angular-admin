@@ -7,6 +7,7 @@ import { RouterModule } from "@angular/router";
 import { routing } from './app.routing';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
+import { CreateAccountComponent } from './create-account/create-account.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SDKBrowserModule } from './shared/sdk/index';
 
@@ -14,6 +15,7 @@ import { SDKBrowserModule } from './shared/sdk/index';
   declarations: [
     AppComponent,
     LoginComponent,
+    CreateAccountComponent,
     ProfileComponent
   ],
   imports: [
