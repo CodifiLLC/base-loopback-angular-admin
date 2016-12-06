@@ -11,13 +11,15 @@ import { LoginComponent } from './login/login.component';
 import { CreateAccountComponent } from './create-account/create-account.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SDKBrowserModule } from './shared/sdk/index';
+import { UserListComponent } from './admin/user-list/user-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     CreateAccountComponent,
-    ProfileComponent
+    ProfileComponent,
+    UserListComponent
   ],
   imports: [
     BrowserModule,

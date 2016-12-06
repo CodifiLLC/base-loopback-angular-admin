@@ -1,6 +1,5 @@
 import { Router } from "@angular/router";
 import { Component } from '@angular/core';
-import { CustomUserApi } from './shared/sdk/services/custom';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +9,7 @@ import { CustomUserApi } from './shared/sdk/services/custom';
 export class AppComponent {
   title = 'app works!';
 
-  constructor(private userApi: CustomUserApi, private router: Router) { }
+  constructor(private router: Router) { }
 
   ngOnInit() {}
 
