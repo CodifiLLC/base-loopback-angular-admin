@@ -38,7 +38,11 @@
   },
   "parse": {
     "body-parser#json": {},
-    "body-parser#urlencoded": {"params": { "extended": true }}
+    "body-parser#urlencoded": {
+      "params": {
+        "extended": true
+      }
+    }
   },
   "routes": {
     "loopback#rest": {
@@ -49,7 +53,7 @@
   },
   "files": {
     "loopback#static": {
-      "params": "$!../client/dist" 
+      "params": "$!../client/dist"
     }
   },
   "final": {
