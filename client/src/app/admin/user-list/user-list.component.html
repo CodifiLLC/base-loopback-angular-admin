@@ -2,6 +2,9 @@
 	<div *ngIf="displayError" class="alert alert-danger">
 		{{displayError}}
 	</div>
+	<div *ngIf="displaySuccess" class="alert alert-success">
+		{{displaySuccess}}
+	</div>
 	<form class="input-group" (ngSubmit)="search()" #searchForm="ngForm">
 		<span class="input-group-addon"><i class='fa fa-search'></i></span>
 		<input type="text" class="form-control" placeholder="Search for..."
@@ -26,7 +29,10 @@
 				<td>{{user.firstName}}</td>
 				<td>{{user.lastName}}</td>
 				<td>{{user.email}}</td>
-				<td></td>
+				<td>
+					<a (click)="deleteUser(user)" title="Delete"><i class='fa fa-trash-o'></i></a>
+					<a (click)="resetPassword(user)" title="Reset Password"><i class="fa fa-undo"></i></a>
+				</td>
 			</tr>
 		</tbody>
 	</table>
