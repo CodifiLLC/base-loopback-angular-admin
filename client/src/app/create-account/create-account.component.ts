@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {CustomUser} from '../shared/sdk/models/CustomUser';
+import {CustomUserApi} from '../shared/sdk/services/custom';
+
 
 @Component({
   selector: 'app-create-account',
@@ -7,9 +11,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CreateAccountComponent implements OnInit {
 
-  constructor() { }
+      userInfo = new CustomUser();
+      emailError: string;
 
-  ngOnInit() {
-  }
+      constructor(private userApi: CustomUserApi, private router: Router) { }
+
+      ngOnInit() {
+      }
+
+      createUser() {
+            this.userApi.create(this.userInfo).subscribe(user => {
+                  console.log('Got \'em', user);
+                  this.router.navigateByUrl('/');
+            }, err => {
+                  console.log('err', err);
+                  this.emailError = "Email Already in Use";
+        		});
+      }
 
 }
