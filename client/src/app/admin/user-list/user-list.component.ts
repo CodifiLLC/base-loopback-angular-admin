@@ -1,3 +1,4 @@
+import {FlashMessageService} from "../../flash-message/flash-message.service";
 import { Component, OnInit } from '@angular/core';
 import { CustomUserApi } from '../../shared/sdk/services';
 import { CustomUser } from "../../shared/sdk/models";
@@ -13,7 +14,7 @@ export class UserListComponent implements OnInit {
 	displaySuccess: string = null;
 	searchString = "";
 
-	constructor(private userApi: CustomUserApi) { }
+	constructor(private userApi: CustomUserApi, private flashMessageService: FlashMessageService) { }
 
 	ngOnInit() {
 		this.runSearch();
@@ -35,8 +36,9 @@ export class UserListComponent implements OnInit {
 			this.userApi.deleteById(user.id).subscribe(() => {
 				this.displayError = null;
 				this.userList.splice(this.userList.findIndex(u => u.id == user.id), 1);
+				this.flashMessageService.showMessage({message: 'Deleted User', messageClass: 'success'});
 			}, err => {
-				this.displayError = this.getErrorMessage(err);
+				this.flashMessageService.showMessage({message: this.getErrorMessage(err), messageClass: 'danger'});
 			});
 		}
 	}
@@ -45,20 +47,13 @@ export class UserListComponent implements OnInit {
 		const newPassword = this.getRandomPassword(user);
 		if (newPassword) {
 			this.userApi.patchAttributes(user.id, {password: newPassword}).subscribe(() => {
-				this.showSuccessMessage("Password reset successfully");
+				this.flashMessageService.showMessage({message: "Password reset successfully", messageClass: 'success'});
 			}, err => {
-				this.displayError = "Password reset failed";
+				this.flashMessageService.showMessage({message: "Password reset failed", messageClass: 'danger'});
 			})
 		} else {
-			this.displayError = "Password reset cancelled";
+			this.flashMessageService.showMessage({message: "Password reset cancelled", messageClass: 'danger'});
 		}
-	}
-
-	showSuccessMessage(message: string){
-		this.displaySuccess = message;
-		setTimeout(() => {
-			this.displaySuccess = null;
-		}, 5000);
 	}
 
 	private getRandomPassword (user: CustomUser){
@@ -69,10 +64,9 @@ export class UserListComponent implements OnInit {
 	private runSearch(filter?) {
 		this.userApi.find(filter).subscribe((list: CustomUser[]) => {
 			this.userList = list;
-			this.displayError = null;
 		}, err => {
 			console.log('there was an error during searching', err);
-			this.displayError = this.getErrorMessage(err);
+			this.flashMessageService.showMessage({message: this.getErrorMessage(err), messageClass: 'danger'});
 		})
 	}
 

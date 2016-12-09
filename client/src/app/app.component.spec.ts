@@ -1,18 +1,27 @@
 /* tslint:disable:no-unused-variable */
 
+import { Component } from '@angular/core';
 import { TestBed, async } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router} from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+// import { FlashMessageComponent } from './flash-message/flash-message.component';
 import { CustomUserApi } from './shared/sdk/services';
 import { Observable } from "rxjs";
+
+@Component({
+  selector: 'app-flash-message',
+  template: ''
+})
+export class FlashMessageComponent {}
 
 describe('AppComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
-        AppComponent
+        AppComponent,
+        FlashMessageComponent
       ],
       imports: [ RouterTestingModule.withRoutes([]) ],
       providers: [
@@ -35,10 +44,11 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('app works!');
   }));
 
-  it('should render router-outlet', async(() => {
+  it('should render router-outlet and flash message', async(() => {
     let fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     let compiled = fixture.debugElement.nativeElement;
+    expect(compiled.querySelector('app-flash-message')).toBeTruthy();
     expect(compiled.querySelector('router-outlet')).toBeTruthy();
   }));
 

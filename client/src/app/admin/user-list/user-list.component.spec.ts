@@ -8,6 +8,7 @@ import { Observable } from "rxjs";
 import { CustomUser } from "../../shared/sdk/models";
 import { CustomUserApi } from '../../shared/sdk/services';
 import { UserListComponent } from './user-list.component';
+import { FlashMessageService } from '../../flash-message/flash-message.service';
 
 describe('UserListComponent', () => {
 
@@ -18,6 +19,8 @@ describe('UserListComponent', () => {
 
 	let component: UserListComponent;
 	let fixture: ComponentFixture<UserListComponent>;
+	let userApi: any;
+	let flashMessageService: any;
 
 	beforeEach(async(() => {
 		TestBed.configureTestingModule({
@@ -27,6 +30,9 @@ describe('UserListComponent', () => {
 					find: jasmine.createSpy('find'),
 					deleteById: jasmine.createSpy('deleteById'),
 					patchAttributes: jasmine.createSpy('patchAttributes'),
+				}},
+				{provide: FlashMessageService, useValue: {
+					showMessage: jasmine.createSpy('showMessage')
 				}}
 			],
 			imports: [FormsModule]
@@ -38,45 +44,15 @@ describe('UserListComponent', () => {
 		fixture = TestBed.createComponent(UserListComponent);
 		component = fixture.componentInstance;
 		// fixture.detectChanges();
+		userApi = fixture.debugElement.injector.get(CustomUserApi);
+		flashMessageService = fixture.debugElement.injector.get(FlashMessageService);
 	});
 
 	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
 
-	it('show show success message for 5 seconds on showSuccessMessage("")', () => {
-		jasmine.clock().uninstall();
-		jasmine.clock().install();
-		expect(component.displaySuccess).toBeNull();
-		const message = "message";
-		component.showSuccessMessage(message);
-		expect(component.displaySuccess).toBe(message);
-		jasmine.clock().tick(4500);
-		expect(component.displaySuccess).toBe(message);
-		jasmine.clock().tick(501);
-		expect(component.displaySuccess).toBeNull();
-		jasmine.clock().uninstall();
-	});
-
-	it('should show success message when displaySuccess property is filled', () => {
-		spyOn(component, 'ngOnInit'); //skip init search
-		const message = "message";
-		component.displaySuccess = message;
-		fixture.detectChanges();
-
-		let messageDiv = fixture.debugElement.query(By.css('div.alert-success'));
-		expect(messageDiv).toBeTruthy();
-		expect(messageDiv.nativeElement.textContent.trim()).toBe(message);
-
-		component.displaySuccess = null;
-		fixture.detectChanges();
-		messageDiv = fixture.debugElement.query(By.css('div.alert-success'));
-		expect(messageDiv).toBeFalsy();
-	});
-
 	it('should lookup users on load', () => {
-		const userApi = fixture.debugElement.injector.get(CustomUserApi);
-
 		expect(userApi.find).not.toHaveBeenCalled();
 
 		userApi.find.and.returnValue(Observable.of(expectedUsers));
@@ -84,12 +60,9 @@ describe('UserListComponent', () => {
 		fixture.detectChanges();
 		expect(userApi.find).toHaveBeenCalled();
 		expect(component.userList).toEqual(expectedUsers);
-		expect(component.displayError).toBeNull();
 	});
 
 	it('should show error when user lookup fails', () => {
-		const userApi = fixture.debugElement.injector.get(CustomUserApi);
-
 		expect(userApi.find).not.toHaveBeenCalled();
 		const expectedErr = "Test error"
 
@@ -98,12 +71,10 @@ describe('UserListComponent', () => {
 		fixture.detectChanges();
 		expect(userApi.find).toHaveBeenCalled();
 		expect(component.userList).toBeUndefined();
-		expect(component.displayError).toBe(expectedErr);
+		expect(flashMessageService.showMessage).toHaveBeenCalledWith({message: expectedErr, messageClass: 'danger'});
 	});
 
 	it('should bind users to the frontend', () => {
-		const userApi = fixture.debugElement.injector.get(CustomUserApi);
-
 		userApi.find.and.returnValue(Observable.of(expectedUsers));
 
 		fixture.detectChanges();
@@ -133,8 +104,6 @@ describe('UserListComponent', () => {
 	});
 
 	it('should search API for users on search', () => {
-		const userApi = fixture.debugElement.injector.get(CustomUserApi);
-
 		expect(userApi.find).not.toHaveBeenCalled();
 
 		userApi.find.and.returnValue(Observable.of(expectedUsers));
@@ -170,7 +139,6 @@ describe('UserListComponent', () => {
 	it('should call CustomUserApi.deleteById on delete (confirm)', () => {
 		spyOn(window, 'confirm').and.returnValue(true);
 		component.userList = expectedUsers.slice();
-		const userApi = fixture.debugElement.injector.get(CustomUserApi);
 
 		expect(userApi.deleteById).not.toHaveBeenCalled();
 
@@ -182,12 +150,12 @@ describe('UserListComponent', () => {
 		expect(component.userList.length).toEqual(1);
 		expect(component.userList[0].id).toBe(expectedUsers[1].id);
 		expect(component.displayError).toBeNull();
+		expect(flashMessageService.showMessage).toHaveBeenCalledWith({message: 'Deleted User', messageClass: 'success'});
 	});
 
 	it('should call CustomUserApi.deleteById on delete and show message on error', () => {
 		spyOn(window, 'confirm').and.returnValue(true);
 		component.userList = expectedUsers.slice();
-		const userApi = fixture.debugElement.injector.get(CustomUserApi);
 
 		expect(userApi.deleteById).not.toHaveBeenCalled();
 
@@ -198,13 +166,12 @@ describe('UserListComponent', () => {
 
 		expect(userApi.deleteById).toHaveBeenCalledWith(expectedUsers[0].id);
 		expect(component.userList.length).toEqual(2);
-		expect(component.displayError).toBe(expectedError.message);
+		expect(flashMessageService.showMessage).toHaveBeenCalledWith({message: expectedError.message, messageClass: 'danger'})
 	});
 
 	it('should not call CustomUserApi.deleteById on delete (cancelled)', () => {
 		spyOn(window, 'confirm').and.returnValue(false);
 		component.userList = expectedUsers.slice();
-		const userApi = fixture.debugElement.injector.get(CustomUserApi);
 
 		expect(userApi.deleteById).not.toHaveBeenCalled();
 
@@ -214,7 +181,6 @@ describe('UserListComponent', () => {
 
 		expect(userApi.deleteById).not.toHaveBeenCalled();
 		expect(component.userList.length).toEqual(2);
-		expect(component.displayError).toBeNull();
 	});
 
 
@@ -232,11 +198,8 @@ describe('UserListComponent', () => {
 	});
 
 	it('should call CustomUserApi.patchAttributes on resetPassword (good password)', () => {
-		let successMessageFunc = spyOn(component, 'showSuccessMessage');
 		const expectedPassword = "val";
 		spyOn(component, 'getRandomPassword').and.returnValue(expectedPassword);
-
-		const userApi = fixture.debugElement.injector.get(CustomUserApi);
 
 		expect(userApi.patchAttributes).not.toHaveBeenCalled();
 
@@ -245,14 +208,11 @@ describe('UserListComponent', () => {
 		component.resetPassword(expectedUsers[0]);
 
 		expect(userApi.patchAttributes).toHaveBeenCalledWith(expectedUsers[0].id, {password: expectedPassword});
-		expect(successMessageFunc).toHaveBeenCalledWith("Password reset successfully");
-		expect(component.displayError).toBeNull();
+		expect(flashMessageService.showMessage).toHaveBeenCalledWith({message: "Password reset successfully", messageClass: 'success'})
 	});
 
 	it('should call CustomUserApi.deleteById on delete and show message on error', () => {
 		spyOn(component, 'getRandomPassword').and.returnValue('sdf')
-
-		const userApi = fixture.debugElement.injector.get(CustomUserApi);
 
 		expect(userApi.patchAttributes).not.toHaveBeenCalled();
 
@@ -261,6 +221,6 @@ describe('UserListComponent', () => {
 		component.resetPassword(expectedUsers[0]);
 
 		expect(userApi.patchAttributes).toHaveBeenCalled();
-		expect(component.displayError).toBe("Password reset failed");
+		expect(flashMessageService.showMessage).toHaveBeenCalledWith({message: "Password reset failed", messageClass: 'danger'})
 	});
 });

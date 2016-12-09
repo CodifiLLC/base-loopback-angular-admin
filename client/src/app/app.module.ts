@@ -12,6 +12,9 @@ import { CreateAccountComponent } from './create-account/create-account.componen
 import { ProfileComponent } from './profile/profile.component';
 import { SDKBrowserModule } from './shared/sdk/index';
 import { UserListComponent } from './admin/user-list/user-list.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { FlashMessageComponent } from './flash-message/flash-message.component';
+import { FlashMessageService } from './flash-message/flash-message.service';
 
 @NgModule({
   declarations: [
@@ -19,7 +22,9 @@ import { UserListComponent } from './admin/user-list/user-list.component';
     LoginComponent,
     CreateAccountComponent,
     ProfileComponent,
-    UserListComponent
+    UserListComponent,
+    ResetPasswordComponent,
+    FlashMessageComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +34,10 @@ import { UserListComponent } from './admin/user-list/user-list.component';
     RouterModule,
     SDKBrowserModule.forRoot()
   ],
-  providers: [LoggedInGuard],
+  providers: [
+    LoggedInGuard,
+    FlashMessageService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,0 +1,36 @@
+#flash-messenger {
+	border-radius: 4px;
+	color: #000;
+	left: 50%;
+	margin-left: -175px;
+	position: fixed;
+	padding: 10px 15px;
+	text-align: left;
+	width: 350px;
+	z-index: 1200;
+
+	&.success {
+		background-color: #7EC57E;
+		border: 1px solid #7EC57E;
+	}
+
+	&.warning {
+		background-color: #FBEC5D;
+		border: 1px solid #FBEC5D;
+	}
+
+	&.danger {
+		background-color: #A4110A;
+		border: 1px solid #A4110A;
+		color: #fff;
+	}
+
+	&.cssFade {
+		transition: 0.2s linear all;
+		top: 30px;
+	}
+
+	&.cssFade.ng-hide {
+		top: 0px;
+	}
+}
