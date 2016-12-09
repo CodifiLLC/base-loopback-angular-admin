@@ -21,10 +21,8 @@ export class CreateAccountComponent implements OnInit {
 
       createUser() {
             this.userApi.create(this.userInfo).subscribe(user => {
-                  console.log('Got \'em', user);
                   this.router.navigateByUrl('/');
             }, err => {
-                  console.log('err', err);
                   this.emailError = "Email Already in Use";
         		});
       }

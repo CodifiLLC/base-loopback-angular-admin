@@ -20,7 +20,6 @@ export class AppComponent {
 
   logout() {
     this.userApi.logout().subscribe(val => {
-      console.log('logged out', val);
       this.router.navigateByUrl('/');
     });
   }

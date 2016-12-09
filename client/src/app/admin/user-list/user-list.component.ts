@@ -65,7 +65,6 @@ export class UserListComponent implements OnInit {
 		this.userApi.find(filter).subscribe((list: CustomUser[]) => {
 			this.userList = list;
 		}, err => {
-			console.log('there was an error during searching', err);
 			this.flashMessageService.showMessage({message: this.getErrorMessage(err), messageClass: 'danger'});
 		})
 	}

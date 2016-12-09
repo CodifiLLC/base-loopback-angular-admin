@@ -16,7 +16,7 @@
 	<table class="table">
 		<thead>
 			<tr>
-				<th>Id</th>
+				<th>ID</th>
 				<th>First Name</th>
 				<th>Last Name</th>
 				<th>Email</th>
@@ -30,8 +30,8 @@
 				<td>{{user.lastName}}</td>
 				<td>{{user.email}}</td>
 				<td>
-					<a (click)="deleteUser(user)" title="Delete"><i class='fa fa-trash-o'></i></a>
-					<a (click)="resetPassword(user)" title="Reset Password"><i class="fa fa-undo"></i></a>
+					<a class="btn btn-default" (click)="deleteUser(user)" title="Delete"><i class='fa fa-trash-o'></i></a>
+					<a class="btn btn-default" (click)="resetPassword(user)" title="Reset Password"><i class="fa fa-undo"></i></a>
 				</td>
 			</tr>
 		</tbody>

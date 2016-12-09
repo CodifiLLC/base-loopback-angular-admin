@@ -20,10 +20,8 @@ export class LoginComponent implements OnInit {
 
 	login() {
 		this.userApi.login(this.loginInfo, 'user', this.loginInfo.rememberMe).subscribe(user => {
-			console.log('logged in', user);
 			this.router.navigateByUrl('/');
 		}, err => {
-			console.log('err', err);
 			this.loginError = "Invalid Login";
 		});
 	}
