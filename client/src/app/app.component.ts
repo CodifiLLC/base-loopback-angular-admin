@@ -1,5 +1,6 @@
 import { Router } from "@angular/router";
 import { Component } from '@angular/core';
+import { CustomUserApi } from './shared/sdk/services';
 
 @Component({
   selector: 'app-root',
@@ -9,11 +10,18 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'app works!';
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private userApi: CustomUserApi) { }
 
   ngOnInit() {}
 
   isSuperuser () {
     return false;
+  }
+
+  logout() {
+    this.userApi.logout().subscribe(val => {
+      console.log('logged out', val);
+      this.router.navigateByUrl('/');
+    });
   }
 }

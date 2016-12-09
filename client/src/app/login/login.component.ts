@@ -1,7 +1,7 @@
 import {Router} from "@angular/router";
 import { Component, OnInit } from '@angular/core';
 import { LoginModel } from './login.model';
-import { CustomUserApi } from '../shared/sdk/services/custom';
+import { CustomUserApi } from '../shared/sdk/services';
 
 
 @Component({

@@ -1,3 +1,33 @@
-<p>
-  user-list works!
-</p>
+<div class='user-list'>
+	<div *ngIf="displayError" class="alert alert-danger">
+		{{displayError}}
+	</div>
+	<form class="input-group" (ngSubmit)="search()" #searchForm="ngForm">
+		<span class="input-group-addon"><i class='fa fa-search'></i></span>
+		<input type="text" class="form-control" placeholder="Search for..."
+			[(ngModel)]="searchString" name="search" />
+		<span class="input-group-btn">
+			<button class="btn btn-default" type="button">Go!</button>
+		</span>
+	</form>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>First Name</th>
+				<th>Last Name</th>
+				<th>Email</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let user of userList">
+				<td>{{user.id}}</td>
+				<td>{{user.firstName}}</td>
+				<td>{{user.lastName}}</td>
+				<td>{{user.email}}</td>
+				<td></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
