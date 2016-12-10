@@ -16,7 +16,10 @@
 			<ul class="nav navbar-nav navbar-top-links navbar-right">
 				<!-- Superuser items -->
 				<li *ngIf="isSuperuser()">
-					<a class="admin-link" routerLink="admin">Users</a>
+					<a class="admin-link" routerLink="admin">
+						<i class="fa fa-users"></i>
+						Users
+					</a>
 				</li>
 
 				<!-- House Settings -->
