@@ -137,44 +137,4 @@ describe('AppComponent', () => {
     expect(signInLink).toBeFalsy();
     expect(signOutLink).toBeTruthy();
   }));
-
-  it('should return the correct values for isSuperuser', async(() => {
-    let fixture = TestBed.createComponent(AppComponent);
-    let component = fixture.componentInstance;
-    const auth = fixture.debugElement.injector.get(LoopBackAuth);
-
-    //test against logged out user
-    const spy = auth.getCurrentUserData.and.returnValue(null);
-    expect(component.isSuperuser()).toBeFalsy();
-
-    //test against normal user (without roles)
-    spy.and.returnValue({id: 1});
-    expect(component.isSuperuser()).toBeFalsy();
-
-    //test against normal user (with no role)
-    spy.and.returnValue({id: 1, roles: []});
-    expect(component.isSuperuser()).toBeFalsy();;
-
-    //test against normal user (with 'normal' role)
-    spy.and.returnValue({id: 1, roles: [{id: 2, name: 'normal'}]});
-    expect(component.isSuperuser()).toBeFalsy();
-
-    //test against admin user (with 'admin' role)
-    spy.and.returnValue({id: 1, roles: [{id: 1, name: 'admin'}]});
-    expect(component.isSuperuser()).toBeTruthy();
-  }));
-
-  it('should return the correct values for isLoggedIn', async(() => {
-    let fixture = TestBed.createComponent(AppComponent);
-    let component = fixture.componentInstance;
-    const auth = fixture.debugElement.injector.get(LoopBackAuth);
-
-    //test against logged out user
-    const spy = auth.getCurrentUserId.and.returnValue(null);
-    expect(component.isLoggedIn()).toBe(false);
-
-    //test against logged in user
-    spy.and.returnValue(1);
-    expect(component.isLoggedIn()).toBe(true);
-  }));
 });
