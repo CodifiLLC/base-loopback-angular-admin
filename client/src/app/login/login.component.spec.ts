@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
+import { FlashMessageService } from '../flash-message/flash-message.service';
 import { LoginComponent } from './login.component';
 import { CustomUserApi, LoopBackAuth } from '../shared/sdk/services';
 
@@ -28,6 +29,9 @@ describe('LoginComponent', () => {
         }},
         {provide: Router, useValue: {
           navigateByUrl: jasmine.createSpy('navigateByUrl')
+        }},
+        {provide: FlashMessageService, useValue: {
+          showMessage: jasmine.createSpy('showMessage')
         }}
       ],
       imports: [FormsModule]
@@ -60,6 +64,7 @@ describe('LoginComponent', () => {
     const userApi = fixture.debugElement.injector.get(CustomUserApi);
     const router = fixture.debugElement.injector.get(Router);
     const authApi = fixture.debugElement.injector.get(LoopBackAuth);
+    const flashMessageService = fixture.debugElement.injector.get(FlashMessageService);
 
     userApi.login.and.returnValue(Observable.of({user: {id: 1, email: 't@t.si', firstname: 'test', lastname: 'thing'}}));
     userApi.getRoles.and.returnValue(Observable.of({id: 1}));
@@ -68,7 +73,7 @@ describe('LoginComponent', () => {
     component.login();
     expect(userApi.login).toHaveBeenCalled();
     expect(userApi.getRoles).toHaveBeenCalledWith(1);
-    expect(component.loginError).toBeFalsy();
+    expect(flashMessageService.showMessage).toHaveBeenCalledWith({message: 'Logged in successfully', messageClass: 'success'});
     expect(router.navigateByUrl).toHaveBeenCalledWith('/');
     expect(authApi.setUser).toHaveBeenCalled();
     expect(authApi.save).toHaveBeenCalled();
@@ -77,13 +82,14 @@ describe('LoginComponent', () => {
   it('should show error on failed login', () => {
     const userApi = fixture.debugElement.injector.get(CustomUserApi);
     const router = fixture.debugElement.injector.get(Router);
+    const flashMessageService = fixture.debugElement.injector.get(FlashMessageService);
 
     userApi.login.and.returnValue(Observable.throw('test error'));
 
     expect(userApi.login).not.toHaveBeenCalled();
     component.login();
     expect(userApi.login).toHaveBeenCalled();
-    expect(component.loginError).toBe('Invalid Login');
+    expect(flashMessageService.showMessage).toHaveBeenCalledWith({message: 'Invalid Login', messageClass: 'danger'});
     expect(router.navigateByUrl).not.toHaveBeenCalled();
   });
 });

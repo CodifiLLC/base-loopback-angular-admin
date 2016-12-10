@@ -1,20 +1,20 @@
 import {Router} from "@angular/router";
 import { Component, OnInit } from '@angular/core';
+import { FlashMessageService } from "../flash-message/flash-message.service";
 import { LoginModel } from './login.model';
 import { CustomUserApi, LoopBackAuth } from '../shared/sdk/services';
 import { Role, SDKToken } from '../shared/sdk/models';
 
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+	selector: 'app-login',
+	templateUrl: './login.component.html',
+	styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-	loginError: string;
 	loginInfo = new LoginModel();
 
-	constructor(private userApi: CustomUserApi, private auth: LoopBackAuth, private router: Router) { }
+	constructor(private userApi: CustomUserApi, private auth: LoopBackAuth, private router: Router, private flashMessageService: FlashMessageService) { }
 
 	ngOnInit() {
 	}
@@ -26,10 +26,13 @@ export class LoginComponent implements OnInit {
 				token.user.roles = roles;
 				this.auth.setUser(token);
 				this.auth.save();
+			}, err => {
+				console.log('unable to lookup roles', err)
 			});
+			this.flashMessageService.showMessage({message: 'Logged in successfully', messageClass: 'success'});
 			this.router.navigateByUrl('/');
 		}, err => {
-			this.loginError = "Invalid Login";
+			this.flashMessageService.showMessage({message: 'Invalid Login', messageClass: 'danger'});
 		});
 	}
 }

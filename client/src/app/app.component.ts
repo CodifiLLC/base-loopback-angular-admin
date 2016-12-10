@@ -1,5 +1,6 @@
 import { Router } from "@angular/router";
 import { Component } from '@angular/core';
+import {FlashMessageService} from "./flash-message/flash-message.service";
 import { CustomUserApi, LoopBackAuth } from './shared/sdk/services';
 import { CustomUser } from './shared/sdk/models';
 
@@ -11,7 +12,7 @@ import { CustomUser } from './shared/sdk/models';
 export class AppComponent {
   title = 'app works!';
 
-  constructor(private router: Router, private userApi: CustomUserApi, private auth: LoopBackAuth) { }
+  constructor(private router: Router, private userApi: CustomUserApi, private auth: LoopBackAuth, private flashMessageService: FlashMessageService) { }
 
   ngOnInit() {}
 
@@ -26,6 +27,7 @@ export class AppComponent {
 
   logout() {
     this.userApi.logout().subscribe(val => {
+      this.flashMessageService.showMessage({message: 'Logged out successfully', messageClass: 'success'});
       this.router.navigateByUrl('/');
     });
   }

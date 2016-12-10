@@ -5,6 +5,7 @@ import { HttpModule } from '@angular/http';
 import { RouterModule } from "@angular/router";
 
 import { LoggedInGuard } from './guards/login';
+import { SuperuserGuard } from './guards/superuser';
 import { routing } from './app.routing';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -36,6 +37,7 @@ import { FlashMessageService } from './flash-message/flash-message.service';
   ],
   providers: [
     LoggedInGuard,
+    SuperuserGuard,
     FlashMessageService
   ],
   bootstrap: [AppComponent]

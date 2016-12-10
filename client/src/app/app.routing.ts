@@ -5,6 +5,7 @@ import {CreateAccountComponent} from "./create-account/create-account.component"
 import {ModuleWithProviders} from "@angular/core";
 import {Routes, RouterModule} from "@angular/router";
 import { LoggedInGuard } from './guards/login';
+import { SuperuserGuard } from './guards/superuser';
 
 export const appRoutes: Routes = [
 	{
@@ -19,7 +20,7 @@ export const appRoutes: Routes = [
 	{
 		path: 'admin',
 		component: UserListComponent,
-		canActivate: [LoggedInGuard]
+		canActivate: [LoggedInGuard, SuperuserGuard]
 	},
 	{
 		path: 'create',

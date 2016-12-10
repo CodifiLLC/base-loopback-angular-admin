@@ -6,7 +6,7 @@ import { By } from '@angular/platform-browser';
 import { Router} from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
-// import { FlashMessageComponent } from './flash-message/flash-message.component';
+import { FlashMessageService } from './flash-message/flash-message.service';
 import { CustomUserApi, LoopBackAuth } from './shared/sdk/services';
 import { Observable } from "rxjs";
 
@@ -32,6 +32,9 @@ describe('AppComponent', () => {
           getCurrentUserData: jasmine.createSpy('getCurrentUserData'),
           getCurrentUserId: jasmine.createSpy('getCurrentUserId')
         }},
+        {provide: FlashMessageService, useValue: {
+          showMessage: jasmine.createSpy('showMessage')
+        }}
       ]
     });
   });
@@ -61,15 +64,17 @@ describe('AppComponent', () => {
 
     const userApi = fixture.debugElement.injector.get(CustomUserApi);
     const router = fixture.debugElement.injector.get(Router);
+    const flashMessageService = fixture.debugElement.injector.get(FlashMessageService);
 
     spyOn(router, 'navigateByUrl');
 
     userApi.logout.and.returnValue(Observable.of({}));
     expect(userApi.logout).not.toHaveBeenCalled();
-    expect(router.navigateByUrl).not.toHaveBeenCalledWith('/');
+    expect(router.navigateByUrl).not.toHaveBeenCalled();
     fixture.componentInstance.logout();
     expect(userApi.logout).toHaveBeenCalled();
     expect(router.navigateByUrl).toHaveBeenCalledWith('/');
+	expect(flashMessageService.showMessage).toHaveBeenCalledWith({message: 'Logged out successfully', messageClass: 'success'});
   }));
 
   it('should call logout on click of logout link', async(() => {
@@ -131,7 +136,45 @@ describe('AppComponent', () => {
     expect(adminLink).toBeFalsy();
     expect(signInLink).toBeFalsy();
     expect(signOutLink).toBeTruthy();
+  }));
 
+  it('should return the correct values for isSuperuser', async(() => {
+    let fixture = TestBed.createComponent(AppComponent);
+    let component = fixture.componentInstance;
+    const auth = fixture.debugElement.injector.get(LoopBackAuth);
 
+    //test against logged out user
+    const spy = auth.getCurrentUserData.and.returnValue(null);
+    expect(component.isSuperuser()).toBeFalsy();
+
+    //test against normal user (without roles)
+    spy.and.returnValue({id: 1});
+    expect(component.isSuperuser()).toBeFalsy();
+
+    //test against normal user (with no role)
+    spy.and.returnValue({id: 1, roles: []});
+    expect(component.isSuperuser()).toBeFalsy();;
+
+    //test against normal user (with 'normal' role)
+    spy.and.returnValue({id: 1, roles: [{id: 2, name: 'normal'}]});
+    expect(component.isSuperuser()).toBeFalsy();
+
+    //test against admin user (with 'admin' role)
+    spy.and.returnValue({id: 1, roles: [{id: 1, name: 'admin'}]});
+    expect(component.isSuperuser()).toBeTruthy();
+  }));
+
+  it('should return the correct values for isLoggedIn', async(() => {
+    let fixture = TestBed.createComponent(AppComponent);
+    let component = fixture.componentInstance;
+    const auth = fixture.debugElement.injector.get(LoopBackAuth);
+
+    //test against logged out user
+    const spy = auth.getCurrentUserId.and.returnValue(null);
+    expect(component.isLoggedIn()).toBe(false);
+
+    //test against logged in user
+    spy.and.returnValue(1);
+    expect(component.isLoggedIn()).toBe(true);
   }));
 });
