@@ -23,7 +23,7 @@
 				</li>
 
 				<!-- House Settings -->
-				<li>
+				<li *ngIf="isLoggedIn()">
 					<a routerLink="/profile">
 						<i class="fa fa-cogs fa-fw"></i>
 						Profile
