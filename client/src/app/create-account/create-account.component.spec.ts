@@ -9,6 +9,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { CustomUserApi } from '../shared/sdk/services/custom';
 import { CreateAccountComponent } from './create-account.component';
+import { FlashMessageService } from "../flash-message/flash-message.service";
 
 describe('CreateAccountComponent', () => {
   let component: CreateAccountComponent;
@@ -23,6 +24,9 @@ describe('CreateAccountComponent', () => {
         }},
         {provide: Router, useValue: {
           navigateByUrl: jasmine.createSpy('navigateByUrl')
+        }},
+        {provide: FlashMessageService, useValue: {
+          showMessage: jasmine.createSpy('showMessage')
         }}
       ],
       imports: [FormsModule, RouterTestingModule.withRoutes([]) ]
@@ -53,6 +57,7 @@ describe('CreateAccountComponent', () => {
   it('should create a new account', () => {
      const userApi = fixture.debugElement.injector.get(CustomUserApi);
      const router = fixture.debugElement.injector.get(Router);
+     const flashService = fixture.debugElement.injector.get(FlashMessageService);
 
      userApi.create.and.returnValue(Observable.of(
        {id: 1, email: 'test@t.com', firstname: 'test', lastname: 'thing', password: 'test1234'}
@@ -61,19 +66,21 @@ describe('CreateAccountComponent', () => {
      expect(userApi.create).not.toHaveBeenCalled();
      component.createUser();
      expect(userApi.create).toHaveBeenCalled();
+     expect(flashService.showMessage).toHaveBeenCalledWith({message: 'Account created successfully', messageClass: 'success'})
      expect(router.navigateByUrl).toHaveBeenCalledWith('/');
   });
 
   it('should show error when email already in use', () => {
      const userApi = fixture.debugElement.injector.get(CustomUserApi);
      const router = fixture.debugElement.injector.get(Router);
+     const flashService = fixture.debugElement.injector.get(FlashMessageService);
 
      userApi.create.and.returnValue(Observable.throw('test error'));
 
      expect(userApi.create).not.toHaveBeenCalled();
      component.createUser();
      expect(userApi.create).toHaveBeenCalled();
-     expect(component.emailError).toBe('Email Already in Use');
+     expect(flashService.showMessage).toHaveBeenCalledWith({message: 'Email already in use', messageClass: 'danger'})
      expect(router.navigateByUrl).not.toHaveBeenCalled();
   });
 });

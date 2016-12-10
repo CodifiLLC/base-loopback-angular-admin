@@ -1,9 +1,6 @@
 <div class="container">
 	<div class="card card-container">
 		<form class="form" (ngSubmit)="createUser()" #createForm="ngForm">
-			<div *ngIf="emailError" class="alert alert-danger">
-				{{emailError}}
-			</div>
 			<div class="form-group col-xs-6">
 				<label for="inputFirst">First Name*</label>
 				<input type="text" id="inputFirst" name="firstname" [(ngModel)]="userInfo.firstName"
