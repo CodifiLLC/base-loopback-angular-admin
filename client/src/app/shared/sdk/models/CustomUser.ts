@@ -1,4 +1,7 @@
 /* tslint:disable */
+import {
+  Role
+} from '../index';
 
 declare var Object: any;
 export interface CustomUserInterface {
@@ -16,6 +19,7 @@ export interface CustomUserInterface {
   verificationToken?: string;
   id?: number;
   accessTokens?: Array<any>;
+  roles?: Array<Role>;
 }
 
 export class CustomUser implements CustomUserInterface {
@@ -33,6 +37,7 @@ export class CustomUser implements CustomUserInterface {
   verificationToken: string;
   id: number;
   accessTokens: Array<any>;
+  roles: Array<Role>;
   constructor(data?: CustomUserInterface) {
     Object.assign(this, data);
   }
@@ -122,6 +127,11 @@ export class CustomUser implements CustomUserInterface {
           name: 'accessTokens',
           type: 'Array<any>',
           model: ''
+        },
+        roles: {
+          name: 'roles',
+          type: 'Array<Role>',
+          model: 'Role'
         },
       }
     }

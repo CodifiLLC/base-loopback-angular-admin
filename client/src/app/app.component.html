@@ -16,7 +16,7 @@
 			<ul class="nav navbar-nav navbar-top-links navbar-right">
 				<!-- Superuser items -->
 				<li *ngIf="isSuperuser()">
-					<a routerLink="portal.giftcard-list">Users</a>
+					<a class="admin-link" routerLink="admin">Users</a>
 				</li>
 
 				<!-- House Settings -->
@@ -26,8 +26,11 @@
 						Profile
 					</a>
 				</li>
-				<li>
-					<a class='logout-link' (click)="logout()">Log Out</a>
+				<li *ngIf="isLoggedIn()">
+					<a class='logout-link' (click)="logout()"><i class="fa fa-sign-out"></i>Log Out</a>
+				</li>
+				<li *ngIf="!isLoggedIn()">
+					<a class='login-link' routerLink="/login"><i class="fa fa-sign-in"></i>Log In</a>
 				</li>
 			</ul>
 		</div>

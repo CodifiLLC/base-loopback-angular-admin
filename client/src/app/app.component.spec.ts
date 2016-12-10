@@ -7,7 +7,7 @@ import { Router} from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 // import { FlashMessageComponent } from './flash-message/flash-message.component';
-import { CustomUserApi } from './shared/sdk/services';
+import { CustomUserApi, LoopBackAuth } from './shared/sdk/services';
 import { Observable } from "rxjs";
 
 @Component({
@@ -27,7 +27,11 @@ describe('AppComponent', () => {
       providers: [
         {provide: CustomUserApi, useValue: {
           logout: jasmine.createSpy('logout')
-        }}
+        }},
+        {provide: LoopBackAuth, useValue: {
+          getCurrentUserData: jasmine.createSpy('getCurrentUserData'),
+          getCurrentUserId: jasmine.createSpy('getCurrentUserId')
+        }},
       ]
     });
   });
@@ -71,6 +75,8 @@ describe('AppComponent', () => {
   it('should call logout on click of logout link', async(() => {
     let fixture = TestBed.createComponent(AppComponent);
 
+    spyOn(fixture.componentInstance, 'isLoggedIn').and.returnValue(true);
+
     fixture.detectChanges();
     const link = fixture.debugElement.query(By.css('a.logout-link'));
     spyOn(fixture.componentInstance, 'logout');
@@ -79,5 +85,53 @@ describe('AppComponent', () => {
     expect(fixture.componentInstance.logout).not.toHaveBeenCalled();
     link.triggerEventHandler('click', null);
     expect(fixture.componentInstance.logout).toHaveBeenCalled();
+  }));
+
+  it('should show correct link', async(() => {
+    let fixture = TestBed.createComponent(AppComponent);
+
+    //set both logged in and admin
+    let superUserSpy = spyOn(fixture.componentInstance, 'isSuperuser').and.returnValue(true);
+    let loggedInSpy = spyOn(fixture.componentInstance, 'isLoggedIn').and.returnValue(true);
+
+    fixture.detectChanges();
+    let signOutLink = fixture.debugElement.query(By.css('a.logout-link'));
+    let signInLink = fixture.debugElement.query(By.css('a.login-link'));
+    let adminLink = fixture.debugElement.query(By.css('a.admin-link'));
+
+    //expect links to exist
+    expect(adminLink).toBeTruthy();
+    expect(signInLink).toBeFalsy();
+    expect(signOutLink).toBeTruthy();
+
+    //set logged out
+    loggedInSpy.and.returnValue(false);
+    superUserSpy.and.returnValue(false);
+
+    fixture.detectChanges();
+    signOutLink = fixture.debugElement.query(By.css('a.logout-link'));
+    signInLink = fixture.debugElement.query(By.css('a.login-link'));
+    adminLink = fixture.debugElement.query(By.css('a.admin-link'));
+
+    //expect links to exist
+    expect(adminLink).toBeFalsy();
+    expect(signInLink).toBeTruthy();
+    expect(signOutLink).toBeFalsy();
+
+    //set logged in, but not admin
+    loggedInSpy.and.returnValue(true);
+    superUserSpy.and.returnValue(false);
+
+    fixture.detectChanges();
+    signOutLink = fixture.debugElement.query(By.css('a.logout-link'));
+    signInLink = fixture.debugElement.query(By.css('a.login-link'));
+    adminLink = fixture.debugElement.query(By.css('a.admin-link'));
+
+    //expect links to exist
+    expect(adminLink).toBeFalsy();
+    expect(signInLink).toBeFalsy();
+    expect(signOutLink).toBeTruthy();
+
+
   }));
 });
