@@ -12,6 +12,7 @@ import { LoginComponent } from './login/login.component';
 import { CreateAccountComponent } from './create-account/create-account.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SDKBrowserModule } from './shared/sdk/index';
+import { AdminComponent } from './admin/admin.component';
 import { UserListComponent } from './admin/user-list/user-list.component';
 //import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { FlashMessageComponent } from './flash-message/flash-message.component';
@@ -24,6 +25,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     LoginComponent,
     CreateAccountComponent,
     ProfileComponent,
+    AdminComponent,
     UserListComponent,
     //ResetPasswordComponent,
     FlashMessageComponent,

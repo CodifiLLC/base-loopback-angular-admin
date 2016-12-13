@@ -1,9 +1,10 @@
 import {ProfileComponent} from "./profile/profile.component";
 import {LoginComponent} from "./login/login.component";
+import {AdminComponent} from "./admin/admin.component";
 import {UserListComponent} from "./admin/user-list/user-list.component";
 import {CreateAccountComponent} from "./create-account/create-account.component"
 import {DashboardComponent} from "./dashboard/dashboard.component";
-import {ModuleWithProviders} from "@angular/core";
+import {ModuleWithProviders, Component} from "@angular/core";
 import {Routes, RouterModule} from "@angular/router";
 import { LoggedInGuard } from './guards/login';
 import { SuperuserGuard } from './guards/superuser';
@@ -24,8 +25,19 @@ export const appRoutes: Routes = [
 	},
 	{
 		path: 'admin',
-		component: UserListComponent,
-		canActivate: [LoggedInGuard, SuperuserGuard]
+		component: AdminComponent,
+		canActivate: [LoggedInGuard, SuperuserGuard],
+		children: [
+			{
+				path: 'users',
+				component: UserListComponent
+			},
+			{
+				path: 'users/:id',
+				component: ProfileComponent,
+				canActivate: [LoggedInGuard]
+			},
+		]
 	},
 	{
 		path: 'create',

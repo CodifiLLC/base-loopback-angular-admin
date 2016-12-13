@@ -4,7 +4,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Location } from '@angular/common';
+import { Router, ActivatedRoute } from "@angular/router";
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { ProfileComponent } from './profile.component';
@@ -35,6 +36,12 @@ describe('ProfileComponent', () => {
         {provide: Router, useValue: {
           navigateByUrl: jasmine.createSpy('navigateByUrl')
         }},
+        {provide: ActivatedRoute, useValue: {
+          params: Observable.of({id: 1})
+        }},
+        {provide: Location, useValue: {
+          back: jasmine.createSpy('back')
+        }},
         {provide: FlashMessageService, useValue: {
           showMessage: jasmine.createSpy('showMessage')
         }}
@@ -53,15 +60,33 @@ describe('ProfileComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call findById in ngOnInit', () => {
+
+  it('should call findById in ngOnInit (params)', () => {
     const userApi = fixture.debugElement.injector.get(CustomUserApi);
+    const activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
+    userApi.getCurrentId.and.returnValue(2);
+    userApi.findById.and.returnValue(Observable.of(expectedUser));
+    activatedRoute.params = Observable.of({id: 1});
+
+    expect(component.user.id).toBeUndefined();
+    fixture.detectChanges();
+    expect(userApi.getCurrentId).not.toHaveBeenCalled();
+    expect(userApi.findById).toHaveBeenCalledWith(1);
+    expect(component.user.id).toBe(expectedUser.id);
+    expect(component.user).toEqual(expectedUser);
+  });
+
+  it('should call findById in ngOnInit (no params)', () => {
+    const userApi = fixture.debugElement.injector.get(CustomUserApi);
+    const activatedRoute = fixture.debugElement.injector.get(ActivatedRoute);
+    activatedRoute.params = Observable.of({});
     userApi.getCurrentId.and.returnValue(1);
     userApi.findById.and.returnValue(Observable.of(expectedUser));
 
     expect(component.user.id).toBeUndefined();
     fixture.detectChanges();
     expect(userApi.getCurrentId).toHaveBeenCalled();
-    expect(userApi.findById).toHaveBeenCalled();
+    expect(userApi.findById).toHaveBeenCalledWith(1);
     expect(component.user.id).toBe(expectedUser.id);
     expect(component.user).toEqual(expectedUser);
   });
@@ -88,22 +113,41 @@ describe('ProfileComponent', () => {
 
     userApi.patchAttributes.and.returnValue(Observable.of(expectedUser));
     expect(userApi.patchAttributes).not.toHaveBeenCalled();
+    expect(authApi.save).not.toHaveBeenCalled();
+
+    userApi.getCurrentId.and.returnValue(expectedUser.id);
+
     component.saveUser();
     expect(userApi.patchAttributes).toHaveBeenCalled();
     expect(flashService.showMessage).toHaveBeenCalledWith({message: 'Profile Saved!', messageClass: 'success'});
     expect(router.navigateByUrl).toHaveBeenCalledWith('/');
+    expect(authApi.save).toHaveBeenCalled();
+
+    userApi.getCurrentId.and.returnValue(expectedUser.id + 1);
+    component.saveUser();
+    expect(userApi.patchAttributes.calls.count()).toBe(2);
+    expect(flashService.showMessage.calls.count()).toBe(2);
+    expect(router.navigateByUrl.calls.count()).toBe(1);
+    expect(authApi.save.calls.count()).toBe(1);
   });
 
-  it('should not update account if cancel button is pushed', () => {
+  it('should not update account if close button is pushed', () => {
     fixture.detectChanges();
     const cancelButton = fixture.debugElement.query(By.css('.btn-default'));
     const router = fixture.debugElement.injector.get(Router);
     spyOn(component, 'saveUser');
+    spyOn(component, 'cancel');
 
     cancelButton.nativeElement.click();
     fixture.detectChanges();
     expect(component.saveUser).not.toHaveBeenCalled();
-    expect(router.navigateByUrl).toHaveBeenCalledWith('/');
+    expect(component.cancel).toHaveBeenCalled();
+  });
+  it('should not update account if close button is pushed', () => {
+    const locat = fixture.debugElement.injector.get(Location);
+
+    component.cancel();    
+    expect(locat.back).toHaveBeenCalled();
   });
 
 });

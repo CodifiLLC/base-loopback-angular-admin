@@ -32,6 +32,7 @@
 				<td>
 					<a class="btn btn-default" (click)="deleteUser(user)" title="Delete"><i class='fa fa-trash-o'></i></a>
 					<a class="btn btn-default" (click)="resetPassword(user)" title="Reset Password"><i class="fa fa-undo"></i></a>
+					<a class="btn btn-default" [routerLink]="user.id" title="Profile"><i class="fa fa-user"></i></a>
 				</td>
 			</tr>
 		</tbody>
