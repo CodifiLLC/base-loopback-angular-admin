@@ -1,8 +1,8 @@
 <div class="container">
 	<div class="card card-container">
-    <div>
-      <h1>Edit Profile</h1>
-    </div>
+	    <div>
+	      <h1>Edit Profile</h1>
+	    </div>
 		<form class="form" (ngSubmit)="saveUser()" #editProfileForm="ngForm">
 			<div class="form-group col-xs-6">
 				<label for="inputFirst">First Name</label>
@@ -45,7 +45,7 @@
 					class="form-control">
 			</div>
 			<button class="btn btn-primary" type="submit">Save Changes</button>
-      <button class="btn btn-default" (click)="this.router.navigateByUrl('/')" type="button">Cancel</button>
+      			<button class="btn btn-default" (click)="this.router.navigateByUrl('/')" type="button">Cancel</button>
 		</form><!-- /form -->
 	</div><!-- /card-container -->
 </div><!-- /container -->

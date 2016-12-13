@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { CustomUserApi } from '../shared/sdk/services/custom';
+import { CustomUserApi } from '../shared/sdk/services';
 import { CreateAccountComponent } from './create-account.component';
 import { FlashMessageService } from "../flash-message/flash-message.service";
 
