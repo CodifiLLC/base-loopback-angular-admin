@@ -95,8 +95,8 @@ describe('ProfileComponent', () => {
   });
 
   it('should not update account if cancel button is pushed', () => {
-	  fixture.detectChanges();
-	  const cancelButton = fixture.debugElement.query(By.css('.btn-default'));
+    fixture.detectChanges();
+    const cancelButton = fixture.debugElement.query(By.css('.btn-default'));
     const router = fixture.debugElement.injector.get(Router);
     spyOn(component, 'saveUser');
 
