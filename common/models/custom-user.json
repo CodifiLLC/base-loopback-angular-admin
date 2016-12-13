@@ -49,8 +49,16 @@
       "principalType": "ROLE",
       "principalId": "$owner",
       "permission": "ALLOW",
-      "property": "*"
+      "property": "__get__roles"
     }
   ],
-  "methods": {}
+  "methods": {},
+  "mixins":{
+   "DisableRelationMethods":{
+     "exposeRelations": {
+       "roles": ["get"],
+       "accessTokens": true
+     }
+   }
+ }
 }
