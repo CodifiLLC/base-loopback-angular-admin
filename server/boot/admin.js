@@ -12,7 +12,7 @@ module.exports = function loadRoles(app) {
 			principalType: ACL.ROLE,
 			principalId: Role.EVERYONE,
 			permission: ACL.DENY,
-			property: ACL.ALL
+			property: ACL.ALL,
 		},
 		{
 			model: 'Role',
@@ -20,7 +20,7 @@ module.exports = function loadRoles(app) {
 			principalType: ACL.ROLE,
 			principalId: Role.EVERYONE,
 			permission: ACL.DENY,
-			property: ACL.ALL
+			property: ACL.ALL,
 		},
 		{
 			model: 'Role',
@@ -28,7 +28,7 @@ module.exports = function loadRoles(app) {
 			principalType: ACL.ROLE,
 			principalId: 'admin',
 			permission: ACL.ALLOW,
-			property: ACL.ALL
+			property: ACL.ALL,
 		},
 		{
 			model: 'RoleMapping',
@@ -36,7 +36,7 @@ module.exports = function loadRoles(app) {
 			principalType: ACL.ROLE,
 			principalId: Role.EVERYONE,
 			permission: ACL.DENY,
-			property: ACL.ALL
+			property: ACL.ALL,
 		},
 		{
 			model: 'RoleMapping',
@@ -44,7 +44,7 @@ module.exports = function loadRoles(app) {
 			principalType: ACL.ROLE,
 			principalId: Role.EVERYONE,
 			permission: ACL.DENY,
-			property: ACL.ALL
+			property: ACL.ALL,
 		},
 		{
 			model: 'RoleMapping',
@@ -52,9 +52,9 @@ module.exports = function loadRoles(app) {
 			principalType: ACL.ROLE,
 			principalId: 'admin',
 			permission: ACL.ALLOW,
-			property: ACL.ALL
+			property: ACL.ALL,
 		},
-	], function (err, acl) {
+	], function(err, acl) {
 		if (err) console.log('unable to create ACLs');
 		//console.log('ACL entry created: %j', acl);
 	});
@@ -70,7 +70,7 @@ module.exports = function loadRoles(app) {
 					firstName: 'Site',
 					lastName: 'Admin',
 					password: require('crypto').randomBytes(8).toString('hex'),
-					emailVerified: true
+					emailVerified: true,
 				};
 				CustomUser.create(defaultAdmin)
 				.then(user => {
