@@ -24,6 +24,7 @@ describe('ProfileComponent', () => {
       providers: [
         {provide: CustomUserApi, useValue: {
           patchAttributes: jasmine.createSpy('patchAttributes'),
+          login: jasmine.createSpy('login'),
           getCurrentId: jasmine.createSpy('getCurrentId'),
           findById: jasmine.createSpy('findById').and.returnValue(Observable.empty())
         }},
@@ -108,7 +109,6 @@ describe('ProfileComponent', () => {
 
     const userApi = fixture.debugElement.injector.get(CustomUserApi);
     const authApi = fixture.debugElement.injector.get(LoopBackAuth);
-    const router = fixture.debugElement.injector.get(Router);
     const flashService = fixture.debugElement.injector.get(FlashMessageService);
 
     userApi.patchAttributes.and.returnValue(Observable.of(expectedUser));
@@ -120,21 +120,18 @@ describe('ProfileComponent', () => {
     component.saveUser();
     expect(userApi.patchAttributes).toHaveBeenCalled();
     expect(flashService.showMessage).toHaveBeenCalledWith({message: 'Profile Saved!', messageClass: 'success'});
-    expect(router.navigateByUrl).toHaveBeenCalledWith('/');
     expect(authApi.save).toHaveBeenCalled();
 
     userApi.getCurrentId.and.returnValue(expectedUser.id + 1);
     component.saveUser();
     expect(userApi.patchAttributes.calls.count()).toBe(2);
     expect(flashService.showMessage.calls.count()).toBe(2);
-    expect(router.navigateByUrl.calls.count()).toBe(1);
     expect(authApi.save.calls.count()).toBe(1);
   });
 
   it('should not update account if close button is pushed', () => {
     fixture.detectChanges();
     const cancelButton = fixture.debugElement.query(By.css('.btn-default'));
-    const router = fixture.debugElement.injector.get(Router);
     spyOn(component, 'saveUser');
     spyOn(component, 'cancel');
 
@@ -146,8 +143,64 @@ describe('ProfileComponent', () => {
   it('should not update account if close button is pushed', () => {
     const locat = fixture.debugElement.injector.get(Location);
 
-    component.cancel();    
+    component.cancel();
     expect(locat.back).toHaveBeenCalled();
+  });
+
+  it('should update password on click', () => {
+    component.user = expectedUser;
+    component.loginInfo.email = expectedUser.email;
+    component.loginInfo.password = 'test1234';
+    component.user.password = 'bob222';
+    component.confirmPassword = 'bob222';
+
+    fixture.detectChanges();
+
+    const userApi = fixture.debugElement.injector.get(CustomUserApi);
+    const authApi = fixture.debugElement.injector.get(LoopBackAuth);
+    const flashService = fixture.debugElement.injector.get(FlashMessageService);
+
+    userApi.login.and.returnValue(Observable.of({user: {id: 1, email: 't@t.si', firstname: 'test', lastname: 'thing'}}))
+    userApi.patchAttributes.and.returnValue(Observable.of(expectedUser));
+    userApi.getCurrentId.and.returnValue(expectedUser.id);
+
+    expect(userApi.login).not.toHaveBeenCalled();
+    expect(userApi.patchAttributes).not.toHaveBeenCalled();
+    expect(authApi.save).not.toHaveBeenCalled();
+
+    component.savePassword();
+    expect(userApi.login).toHaveBeenCalled();
+    expect(userApi.patchAttributes).toHaveBeenCalled();
+    expect(flashService.showMessage).toHaveBeenCalledWith({message: 'Password changed successfully.', messageClass: 'success'});
+    expect(authApi.save).toHaveBeenCalled();
+  });
+
+  it('should not update password if password is incorrect', () => {
+    component.user = expectedUser;
+    component.loginInfo.email = expectedUser.email;
+    component.loginInfo.password = 'wrong';
+    component.user.password = 'bob222';
+    component.confirmPassword = 'bob222';
+
+    fixture.detectChanges();
+
+    const userApi = fixture.debugElement.injector.get(CustomUserApi);
+    const authApi = fixture.debugElement.injector.get(LoopBackAuth);
+    const flashService = fixture.debugElement.injector.get(FlashMessageService);
+
+    userApi.login.and.returnValue(Observable.throw('test error'));
+    userApi.patchAttributes.and.returnValue(Observable.throw('test error'));
+    userApi.getCurrentId.and.returnValue(expectedUser.id);
+
+    expect(userApi.login).not.toHaveBeenCalled();
+    expect(userApi.patchAttributes).not.toHaveBeenCalled();
+    expect(authApi.save).not.toHaveBeenCalled();
+
+    component.savePassword();
+    expect(userApi.login).toHaveBeenCalled();
+    expect(userApi.patchAttributes).not.toHaveBeenCalled();
+    expect(flashService.showMessage).toHaveBeenCalledWith({message: 'Your current password is incorrect', messageClass: 'danger'});
+    expect(authApi.save).not.toHaveBeenCalled();
   });
 
 });

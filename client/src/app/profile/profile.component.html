@@ -1,51 +1,89 @@
 <div class="container">
 	<div class="card card-container">
-	    <div>
-	      <h1>Edit Profile</h1>
-	    </div>
-		<form class="form" (ngSubmit)="saveUser()" #editProfileForm="ngForm">
-			<div class="form-group col-xs-6">
-				<label for="inputFirst">First Name</label>
-				<input type="text" id="inputFirst" name="firstname" [(ngModel)]="user.firstName"
-					value="user.firstName" class="form-control">
+		<ul class="nav nav-pills">
+  		<li class="active"><a data-toggle="pill" href="#editProfile">Account</a></li>
+  		<li><a data-toggle="pill" href="#changePassword">Change Password</a></li>
+		</ul>
+		<div class="tab-content">
+			<div class="tab-pane in active" id="editProfile">
+				<div>
+			    <h1>Edit Profile</h1>
+			  </div>
+				<form class="form" (ngSubmit)="saveUser()" #editProfileForm="ngForm">
+					<div class="form-group col-xs-6">
+						<label for="inputFirst">First Name</label>
+						<input type="text" id="inputFirst" name="firstname" [(ngModel)]="user.firstName"
+							class="form-control">
+					</div>
+					<div class="form-group col-xs-6">
+						<label for="inputLast">Last Name</label>
+						<input type="text" id="inputLast" name="lastname" [(ngModel)]="user.lastName"
+							class="form-control">
+					</div>
+					<div class="form-group col-xs-12">
+						<label for="inputEmail">Email</label>
+						<input type="email" id="inputEmail" name="email" [(ngModel)]="user.email"
+							class="form-control">
+					</div>
+					<div class="form-group col-xs-12">
+						<label for="inputUsername">Username</label>
+						<input type="text" id="inputUsername" name="username" [(ngModel)]="user.username"
+							class="form-control">
+					</div>
+					<div class="form-group col-xs-12">
+						<label for="inputAddress">Address</label>
+						<input type="text" id="inputAddress" name="address" [(ngModel)]="user.address"
+							class="form-control">
+					</div>
+					<div class="form-group col-xs-5">
+						<label for="inputCity">City</label>
+						<input type="text" id="inputCity" name="city" [(ngModel)]="user.city"
+							class="form-control">
+					</div>
+					<div class="form-group col-xs-3">
+						<label for="inputState">State</label>
+						<input type="text" id="inputState" name="state" [(ngModel)]="user.state"
+							class="form-control">
+					</div>
+					<div class="form-group col-xs-4">
+						<label for="inputZip">ZIP Code</label>
+						<input type="number" id="inputZip" name="zip" [(ngModel)]="user.postalCode"
+							class="form-control">
+					</div>
+					<button class="btn btn-primary" type="submit">Save Changes</button>
+					<button class="btn btn-default" (click)="cancel()" type="button">Close</button>
+				</form><!-- /form -->
 			</div>
-			<div class="form-group col-xs-6">
-				<label for="inputLast">Last Name</label>
-				<input type="text" id="inputLast" name="lastname" [(ngModel)]="user.lastName"
-					class="form-control">
+			<div class="tab-pane" id="changePassword">
+				<div>
+		      <h1>Change Password</h1>
+		    </div>
+				<form class="form" (ngSubmit)="savePassword()" #changePassForm="ngForm">
+					<div class="row">
+						<div class="form-group col-xs-6">
+							<label for="inputOldPass">Current Password</label>
+							<input type="password" id="inputOldPass" name="oldpass" [(ngModel)]="loginInfo.password"
+								class="form-control">
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group col-xs-6">
+							<label for="inputNewPass">New Password</label>
+							<input type="password" id="inputNewPass" name="newpass" [(ngModel)]="user.password"
+								class="form-control">
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group col-xs-6">
+							<label for="inputConfirmPass">Confirm Password</label>
+							<input type="password" id="inputConfirmPass" name="confirmpass" [(ngModel)]="confirmPassword"
+								class="form-control">
+						</div>
+					</div>
+					<button class="btn btn-primary" type="submit">Save Changes</button>
+					<button class="btn btn-default" (click)="cancel()" type="button">Close</button>
+				</form><!-- /form -->
 			</div>
-			<div class="form-group col-xs-12">
-				<label for="inputEmail">Email</label>
-				<input type="email" id="inputEmail" name="email" [(ngModel)]="user.email"
-					class="form-control">
-			</div>
-			<div class="form-group col-xs-12">
-				<label for="inputUsername">Username</label>
-				<input type="text" id="inputUsername" name="username" [(ngModel)]="user.username"
-					class="form-control">
-			</div>
-			<div class="form-group col-xs-12">
-				<label for="inputAddress">Address</label>
-				<input type="text" id="inputAddress" name="address" [(ngModel)]="user.address"
-					class="form-control">
-			</div>
-			<div class="form-group col-xs-5">
-				<label for="inputCity">City</label>
-				<input type="text" id="inputCity" name="city" [(ngModel)]="user.city"
-					class="form-control">
-			</div>
-			<div class="form-group col-xs-3">
-				<label for="inputState">State</label>
-				<input type="text" id="inputState" name="state" [(ngModel)]="user.state"
-					class="form-control">
-			</div>
-			<div class="form-group col-xs-4">
-				<label for="inputZip">ZIP Code</label>
-				<input type="number" id="inputZip" name="zip" [(ngModel)]="user.postalCode"
-					class="form-control">
-			</div>
-			<button class="btn btn-primary" type="submit">Save Changes</button>
-			<button class="btn btn-default" (click)="cancel()" type="button">Close</button>
-		</form><!-- /form -->
+		</div><!-- /tab-content -->
 	</div><!-- /card-container -->
 </div><!-- /container -->

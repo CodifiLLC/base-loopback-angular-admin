@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { CustomUserApi, LoopBackAuth } from '../shared/sdk/services';
 import {FlashMessageService} from "../flash-message/flash-message.service";
 import {CustomUser} from '../shared/sdk/models';
+import {LoginModel} from '../login/login.model';
 
 @Component({
 	selector: 'app-profile',
@@ -14,7 +15,9 @@ import {CustomUser} from '../shared/sdk/models';
 export class ProfileComponent implements OnInit, OnDestroy {
 
 	private paramSubscription: Subscription;
+	loginInfo = new LoginModel();
 	user = new CustomUser();
+  confirmPassword: string;
 
 	constructor(private router: Router, private activatedRoute: ActivatedRoute, private location: Location,
 		private userApi: CustomUserApi, private auth: LoopBackAuth,
@@ -25,6 +28,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 			this.user.id = p['id'] || this.userApi.getCurrentId();
 			this.userApi.findById(this.user.id).subscribe((user: CustomUser) => {
 				this.user = user;
+				this.loginInfo.email = this.user.email;
 			});
 		});
 	}
@@ -47,7 +51,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
 				token.user.roles = roles;
 				this.auth.setUser(token);
 				this.auth.save();
-				this.router.navigateByUrl('/');
 			}
 		});
 	}
@@ -55,5 +58,29 @@ export class ProfileComponent implements OnInit, OnDestroy {
 	cancel() {
 		this.location.back();
 	}
+
+  savePassword() {
+    this.userApi.login(this.loginInfo, 'user').subscribe(() => {
+			if(this.user.password != this.confirmPassword){
+				this.flashMessageService.showMessage({message: "New password and Confirm password fields must be the same.", messageClass: "danger"});
+			}else{
+				this.flashMessageService.showMessage({message: "Password changed successfully.", messageClass: "success"});
+				this.userApi.patchAttributes(this.user.id, this.user).subscribe(user => {
+					this.user = user;
+					//if this is being used by the actual user, save the new token and redirect
+					if (this.user.id == this.userApi.getCurrentId()){
+						const token = this.auth.getToken();
+						const roles = this.auth.getCurrentUserData().roles;
+						token.user = this.user;
+						token.user.roles = roles;
+						this.auth.setUser(token);
+						this.auth.save();
+					}
+				});
+			}
+		}, err => {
+			this.flashMessageService.showMessage({message: "Your current password is incorrect", messageClass: "danger"});
+		});
+  }
 
 }
