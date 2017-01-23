@@ -28,6 +28,23 @@ boot(app, __dirname, function(err) {
 
   // start the server if `$ node server.js`
 	if (require.main === module) {
-		app.start();
+		const application = app.start();
+
+		app.io = require('socket.io')(application);
+		app.io.on('connection', socket => {
+			app.io.emit('stuff', 'message');
+
+			console.log('a user connected');
+
+			socket.on('disconnect', () => {
+				console.log('user disconnected');
+			});
+			socket.on('join-channel', room => {
+				socket.join(room);
+			});
+			socket.on('leave-channel', room => {
+				socket.leave(room);
+			});
+		});
 	}
 });

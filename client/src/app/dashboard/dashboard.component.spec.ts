@@ -2,9 +2,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { DashboardComponent } from './dashboard.component';
 import { LoopBackAuth } from '../shared/sdk/services';
+import { SocketService, SocketMessage } from '../shared/socket.service';
 
 describe('DashboardComponent', () => {
 	let component: DashboardComponent;
@@ -15,6 +17,9 @@ describe('DashboardComponent', () => {
 			declarations: [ DashboardComponent ],
 			providers: [
 				{provide: LoopBackAuth, useValue: {}},
+				{provide: SocketService, useValue: {
+					watchEvent: jasmine.createSpy("watchEvent").and.returnValue(Observable.from([]))
+				}}
 			]
 		})
 		.compileComponents();
