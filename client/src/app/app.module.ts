@@ -17,6 +17,7 @@ import { UserListComponent } from './admin/user-list/user-list.component';
 //import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { FlashMessageComponent } from './flash-message/flash-message.component';
 import { FlashMessageService } from './flash-message/flash-message.service';
+import { SocketService } from './shared/socket.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
@@ -42,7 +43,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
   providers: [
     LoggedInGuard,
     SuperuserGuard,
-    FlashMessageService
+    FlashMessageService,
+    SocketService
   ],
   bootstrap: [AppComponent]
 })
