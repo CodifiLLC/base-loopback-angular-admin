@@ -27,9 +27,9 @@
     "nsp": "^2.1.0"
   },
   "repository": {
-    "type": "",
-    "url": ""
+    "type": "git",
+    "url": "https://github.com/CodifiLLC/base-loopback-admin.git"
   },
-  "license": "UNLICENSED",
-  "description": "base-loopback-admin"
+  "license": "MIT",
+  "description": "A base project (LoopBack 3) for building an API that has protected admin functions"
 }
