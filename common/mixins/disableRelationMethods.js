@@ -55,7 +55,7 @@ module.exports = function(Model, options) {
 
 		//remove all of the methods we've constructed
 		methods.forEach(meth => {
-			Model.disableRemoteMethod(meth, false);
+			Model.disableRemoteMethodByName(`prototype.${meth}`);
 		});
 
 		//console.log(methods);
