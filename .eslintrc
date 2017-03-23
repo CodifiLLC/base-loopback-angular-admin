@@ -9,11 +9,15 @@
       }
   },
   "rules": {
-    "indent": ["error", "tab"],
+    "spaced-comment": "off",
+    "indent": ["error", "tab", {"SwitchCase": 1}],
     "max-len": ["error", 100, 4, {
        "ignoreComments": true,
        "ignoreUrls": true,
        "ignorePattern": "^\\s*var\\s.=\\s*(require\\s*\\()|(/)"
      }]
+  },
+  "env": {
+    "jasmine": true
   }
 }

@@ -6,7 +6,6 @@
 
 var config = require('../../server/config.json');
 var path = require('path');
-const loopbackContext = require('loopback-context');
 
 module.exports = function(CustomUser) {
 	//send verification email after registration
