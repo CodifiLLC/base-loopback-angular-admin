@@ -8,8 +8,8 @@
     "lint": "eslint . && tslint \"client/src/**/*.ts\"",
     "start": "ng build && node .",
     "dev": "ng serve & node-dev .",
-    "test": "(cd client && ng test)",
-    "posttest": "npm run lint && nsp check",
+    "test": "ng test --single-run && ./node_modules/jasmine/bin/jasmine.js JASMINE_CONFIG_PATH=jasmine.json",
+    "posttest.bak": "npm run lint && nsp check",
     "pree2e": "webdriver-manager update",
     "e2e": "(cd client && protractor)"
   },
