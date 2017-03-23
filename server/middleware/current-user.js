@@ -14,8 +14,6 @@ module.exports = function() {
 
 			//if we found the user, set it in places that can be accessed throughout the request
 			res.locals.currentUser = user;
-			var loopbackContext = require('loopback-context').getCurrentContext();
-			if (loopbackContext) loopbackContext.set('currentUser', user);
 			next();
 		}).catch(err => next(err));
 	};
