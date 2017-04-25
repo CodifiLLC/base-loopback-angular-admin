@@ -5,39 +5,39 @@ import {
 
 declare var Object: any;
 export interface CustomUserInterface {
-  firstName: string;
-  lastName: string;
-  address?: string;
-  city?: string;
-  state?: string;
-  postalCode?: string;
-  realm?: string;
-  username?: string;
-  password: string;
-  email: string;
-  emailVerified?: boolean;
-  verificationToken?: string;
-  id?: number;
-  accessTokens?: Array<any>;
-  roles?: Array<Role>;
+  "firstName": string;
+  "lastName": string;
+  "address"?: string;
+  "city"?: string;
+  "state"?: string;
+  "postalCode"?: string;
+  "realm"?: string;
+  "username"?: string;
+  "password": string;
+  "email": string;
+  "emailVerified"?: boolean;
+  "verificationToken"?: string;
+  "id"?: number;
+  accessTokens?: any[];
+  roles?: Role[];
 }
 
 export class CustomUser implements CustomUserInterface {
-  firstName: string;
-  lastName: string;
-  address: string;
-  city: string;
-  state: string;
-  postalCode: string;
-  realm: string;
-  username: string;
-  password: string;
-  email: string;
-  emailVerified: boolean;
-  verificationToken: string;
-  id: number;
-  accessTokens: Array<any>;
-  roles: Array<Role>;
+  "firstName": string;
+  "lastName": string;
+  "address": string;
+  "city": string;
+  "state": string;
+  "postalCode": string;
+  "realm": string;
+  "username": string;
+  "password": string;
+  "email": string;
+  "emailVerified": boolean;
+  "verificationToken": string;
+  "id": number;
+  accessTokens: any[];
+  roles: Role[];
   constructor(data?: CustomUserInterface) {
     Object.assign(this, data);
   }
@@ -56,7 +56,7 @@ export class CustomUser implements CustomUserInterface {
   **/
   public static factory(data: CustomUserInterface): CustomUser{
     return new CustomUser(data);
-  }  
+  }
   /**
   * @method getModelDefinition
   * @author Julien Ledun
@@ -69,55 +69,55 @@ export class CustomUser implements CustomUserInterface {
       name: 'CustomUser',
       plural: 'CustomUsers',
       properties: {
-        firstName: {
+        "firstName": {
           name: 'firstName',
           type: 'string'
         },
-        lastName: {
+        "lastName": {
           name: 'lastName',
           type: 'string'
         },
-        address: {
+        "address": {
           name: 'address',
           type: 'string'
         },
-        city: {
+        "city": {
           name: 'city',
           type: 'string'
         },
-        state: {
+        "state": {
           name: 'state',
           type: 'string'
         },
-        postalCode: {
+        "postalCode": {
           name: 'postalCode',
           type: 'string'
         },
-        realm: {
+        "realm": {
           name: 'realm',
           type: 'string'
         },
-        username: {
+        "username": {
           name: 'username',
           type: 'string'
         },
-        password: {
+        "password": {
           name: 'password',
           type: 'string'
         },
-        email: {
+        "email": {
           name: 'email',
           type: 'string'
         },
-        emailVerified: {
+        "emailVerified": {
           name: 'emailVerified',
           type: 'boolean'
         },
-        verificationToken: {
+        "verificationToken": {
           name: 'verificationToken',
           type: 'string'
         },
-        id: {
+        "id": {
           name: 'id',
           type: 'number'
         },
@@ -125,12 +125,12 @@ export class CustomUser implements CustomUserInterface {
       relations: {
         accessTokens: {
           name: 'accessTokens',
-          type: 'Array<any>',
+          type: 'any[]',
           model: ''
         },
         roles: {
           name: 'roles',
-          type: 'Array<Role>',
+          type: 'Role[]',
           model: 'Role'
         },
       }

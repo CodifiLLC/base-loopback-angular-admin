@@ -5,6 +5,7 @@ import { TestBed, async } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router} from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { CollapseModule } from 'ngx-bootstrap';
 import { AppComponent } from './app.component';
 import { FlashMessageService } from './flash-message/flash-message.service';
 import { CustomUserApi, LoopBackAuth } from './shared/sdk/services';
@@ -23,7 +24,7 @@ describe('AppComponent', () => {
         AppComponent,
         FlashMessageComponent
       ],
-      imports: [ RouterTestingModule.withRoutes([]) ],
+      imports: [ RouterTestingModule.withRoutes([]), CollapseModule.forRoot() ],
       providers: [
         {provide: CustomUserApi, useValue: {
           logout: jasmine.createSpy('logout')

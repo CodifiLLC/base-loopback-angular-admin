@@ -12,6 +12,7 @@ import { CustomUser } from './shared/sdk/models';
 })
 export class AppComponent extends LoginAwareComponent {
   title = 'app works!';
+  isCollapsed = true;
 
   constructor(private router: Router, private userApi: CustomUserApi, auth: LoopBackAuth, private flashMessageService: FlashMessageService) {
     super(auth);

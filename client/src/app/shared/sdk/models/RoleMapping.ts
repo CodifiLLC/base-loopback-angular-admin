@@ -5,18 +5,18 @@ import {
 
 declare var Object: any;
 export interface RoleMappingInterface {
-  id?: number;
-  principalType?: string;
-  principalId?: string;
-  roleId?: number;
+  "id"?: number;
+  "principalType"?: string;
+  "principalId"?: string;
+  "roleId"?: number;
   role?: Role;
 }
 
 export class RoleMapping implements RoleMappingInterface {
-  id: number;
-  principalType: string;
-  principalId: string;
-  roleId: number;
+  "id": number;
+  "principalType": string;
+  "principalId": string;
+  "roleId": number;
   role: Role;
   constructor(data?: RoleMappingInterface) {
     Object.assign(this, data);
@@ -36,7 +36,7 @@ export class RoleMapping implements RoleMappingInterface {
   **/
   public static factory(data: RoleMappingInterface): RoleMapping{
     return new RoleMapping(data);
-  }  
+  }
   /**
   * @method getModelDefinition
   * @author Julien Ledun
@@ -49,19 +49,19 @@ export class RoleMapping implements RoleMappingInterface {
       name: 'RoleMapping',
       plural: 'RoleMappings',
       properties: {
-        id: {
+        "id": {
           name: 'id',
           type: 'number'
         },
-        principalType: {
+        "principalType": {
           name: 'principalType',
           type: 'string'
         },
-        principalId: {
+        "principalId": {
           name: 'principalId',
           type: 'string'
         },
-        roleId: {
+        "roleId": {
           name: 'roleId',
           type: 'number'
         },

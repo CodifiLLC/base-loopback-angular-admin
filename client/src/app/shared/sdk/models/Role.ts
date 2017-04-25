@@ -5,21 +5,21 @@ import {
 
 declare var Object: any;
 export interface RoleInterface {
-  id?: number;
-  name: string;
-  description?: string;
-  created?: Date;
-  modified?: Date;
-  principals?: Array<RoleMapping>;
+  "id"?: number;
+  "name": string;
+  "description"?: string;
+  "created"?: Date;
+  "modified"?: Date;
+  principals?: RoleMapping[];
 }
 
 export class Role implements RoleInterface {
-  id: number;
-  name: string;
-  description: string;
-  created: Date;
-  modified: Date;
-  principals: Array<RoleMapping>;
+  "id": number;
+  "name": string;
+  "description": string;
+  "created": Date;
+  "modified": Date;
+  principals: RoleMapping[];
   constructor(data?: RoleInterface) {
     Object.assign(this, data);
   }
@@ -38,7 +38,7 @@ export class Role implements RoleInterface {
   **/
   public static factory(data: RoleInterface): Role{
     return new Role(data);
-  }  
+  }
   /**
   * @method getModelDefinition
   * @author Julien Ledun
@@ -51,33 +51,31 @@ export class Role implements RoleInterface {
       name: 'Role',
       plural: 'Roles',
       properties: {
-        id: {
+        "id": {
           name: 'id',
           type: 'number'
         },
-        name: {
+        "name": {
           name: 'name',
           type: 'string'
         },
-        description: {
+        "description": {
           name: 'description',
           type: 'string'
         },
-        created: {
+        "created": {
           name: 'created',
-          type: 'Date',
-          default: new Date(0)
+          type: 'Date'
         },
-        modified: {
+        "modified": {
           name: 'modified',
-          type: 'Date',
-          default: new Date(0)
+          type: 'Date'
         },
       },
       relations: {
         principals: {
           name: 'principals',
-          type: 'Array<RoleMapping>',
+          type: 'RoleMapping[]',
           model: 'RoleMapping'
         },
       }

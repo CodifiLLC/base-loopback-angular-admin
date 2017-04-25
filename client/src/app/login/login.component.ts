@@ -14,7 +14,9 @@ import { Role, SDKToken } from '../shared/sdk/models';
 export class LoginComponent implements OnInit {
 	loginInfo = new LoginModel();
 
-	constructor(private userApi: CustomUserApi, private auth: LoopBackAuth, private router: Router, private flashMessageService: FlashMessageService) { }
+	constructor(private userApi: CustomUserApi, private auth: LoopBackAuth, private router: Router, private flashMessageService: FlashMessageService) {
+		this.loginInfo.rememberMe = true; 
+	}
 
 	ngOnInit() {
 	}
@@ -24,7 +26,7 @@ export class LoginComponent implements OnInit {
 			//once the user has been logged in, look up their roles and save them to the user
 			this.userApi.getRoles(token.user.id).subscribe((roles: Role[]) => {
 				token.user.roles = roles;
-				this.auth.setUser(token);
+				this.auth.setUser(token.user);
 				this.auth.save();
 			}, err => {
 				console.log('unable to lookup roles', err)

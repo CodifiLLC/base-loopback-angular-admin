@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from "@angular/router";
+import { BsDropdownModule, CollapseModule } from 'ngx-bootstrap';
 
 import { LoggedInGuard } from './guards/login';
 import { SuperuserGuard } from './guards/superuser';
@@ -34,6 +35,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
   ],
   imports: [
     BrowserModule,
+    BsDropdownModule.forRoot(),
+    CollapseModule.forRoot(),
     FormsModule,
     HttpModule,
     routing,
