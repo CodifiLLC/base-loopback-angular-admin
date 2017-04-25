@@ -5,7 +5,7 @@
   "angular-cli": {},
   "scripts": {
     "build:sdk": "./node_modules/.bin/lb-sdk server/server.js client/src/app/shared/sdk -i disabled -l angular2",
-    "lint": "eslint . && tslint \"client/src/**/*.ts\"",
+    "lint": "eslint . && tslint \"client/src/**/*.ts\" -e \"client/src/app/shared/sdk/**\"",
     "start": "ng build && node .",
     "dev": "ng serve & node-dev .",
     "test": "ng test --single-run && ./node_modules/jasmine/bin/jasmine.js JASMINE_CONFIG_PATH=jasmine.json",

@@ -9,7 +9,7 @@ export class SuperuserGuard implements CanActivate {
 
 	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 		const curUser: CustomUser = this.auth.getCurrentUserData();
-		if (curUser && curUser.roles && curUser.roles.find(r => r.name == "admin")){
+		if (curUser && curUser.roles && curUser.roles.find(r => r.name === 'admin')) {
 			return true;
 		} else {
 			this.router.navigateByUrl('/');

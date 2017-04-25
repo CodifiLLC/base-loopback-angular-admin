@@ -1,8 +1,7 @@
 /* tslint:disable:no-unused-variable */
 
-import { TestBed, async, inject } from '@angular/core/testing';
-import {Subject} from 'rxjs';
-import * as io from "socket.io-client";
+import {Subject} from 'rxjs/Subject';
+import * as io from 'socket.io-client';
 import { SocketService } from './socket.service';
 
 describe('SocketService', () => {
@@ -30,14 +29,14 @@ describe('SocketService', () => {
 	// 	expect(service).toBeTruthy();
 	// }));
 	it('should call io constructor', () => {
-		let service = new SocketService();
+		const service = new SocketService();
 		expect(service).toBeTruthy();
 		expect(ioConnectSpy).toHaveBeenCalled();
 		//expect(dummySocket.on).toHaveBeenCalled();
 	});
 
 	it('should call emit on joinChannel', () => {
-		let service = new SocketService();
+		const service = new SocketService();
 
 		//expect(dummySocket.on).toHaveBeenCalled();
 		expect(dummySocket.emit).not.toHaveBeenCalled();
@@ -58,7 +57,7 @@ describe('SocketService', () => {
 	});
 
 	it('should call emit on leaveChannel', () => {
-		let service = new SocketService();
+		const service = new SocketService();
 
 		//make sure nothing has been called yet
 		expect(dummySocket.emit).not.toHaveBeenCalled();
@@ -75,33 +74,33 @@ describe('SocketService', () => {
 	});
 
 	it('should return correct subject for getSubjectForEvent', () => {
-		let service = new SocketService();
+		const service = new SocketService();
 		//let getSubjectForEvent = spyOn(service, 'getSubjectForEvent').and.callThrough();
 
 		const eventName = 'test';
 		expect(dummySocket.on).not.toHaveBeenCalled();
-		let subj1 = service['getSubjectForEvent'](eventName);
+		const subj1 = service['getSubjectForEvent'](eventName);
 		expect(dummySocket.on).toHaveBeenCalledWith(eventName, jasmine.any(Function));
 
 		dummySocket.on.calls.reset();
 
-		let subj2 = service['getSubjectForEvent'](eventName);
+		const subj2 = service['getSubjectForEvent'](eventName);
 		expect(dummySocket.on).not.toHaveBeenCalled();
 		expect(subj1).toBe(subj2);
 
 		dummySocket.on.calls.reset();
 
-		let subj3 = service['getSubjectForEvent']("testing");
+		const subj3 = service['getSubjectForEvent']('testing');
 		expect(dummySocket.on).toHaveBeenCalled();
 		expect(subj1).not.toBe(subj3);
 	});
 
 	it('should subscribe to socket.on in getSubjectForEvent', () => {
-		let service = new SocketService();
+		const service = new SocketService();
 
 		const eventName = 'test';
 		expect(dummySocket.on).not.toHaveBeenCalled();
-		let returnedSubject = service['getSubjectForEvent'](eventName);
+		const returnedSubject = service['getSubjectForEvent'](eventName);
 		expect(dummySocket.on).toHaveBeenCalled();
 		const callback = dummySocket.on.calls.mostRecent().args[1];
 
@@ -116,14 +115,14 @@ describe('SocketService', () => {
 	});
 
 	it ('should return personal observable from watchEvent', () => {
-		const subj = new Subject<any>()
+		const subj = new Subject<any>();
 
-		let service = new SocketService();
+		const service = new SocketService();
 
 		spyOn(service, 'getSubjectForEvent').and.returnValue(subj);
 
 		const obs = service.watchEvent('test');
-		let values = [];
+		const values = [];
 		const subscr = obs.subscribe((item) => {
 			values.push(item);
 		});
@@ -139,7 +138,7 @@ describe('SocketService', () => {
 	it ('should return personal observable from watchEvent', () => {
 		const eventName = 'event';
 
-		let service = new SocketService();
+		const service = new SocketService();
 
 		expect(dummySocket.removeListener).not.toHaveBeenCalled();
 		const obs1 = service.watchEvent(eventName);
@@ -152,7 +151,7 @@ describe('SocketService', () => {
 	it ('should return personal observable from watchEvent (only delete after last unsub)', () => {
 		const eventName = 'event';
 
-		let service = new SocketService();
+		const service = new SocketService();
 
 		//expect no listeners to have been unsubscribed
 		expect(dummySocket.removeListener).not.toHaveBeenCalled();

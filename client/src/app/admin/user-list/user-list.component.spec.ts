@@ -2,11 +2,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Observable } from "rxjs";
+import { Observable } from 'rxjs/Rx';
 
-import { CustomUser, Role } from "../../shared/sdk/models";
+import { CustomUser, Role } from '../../shared/sdk/models';
 import { CustomUserApi, RoleMappingApi, RoleApi } from '../../shared/sdk/services';
 import { UserListComponent } from './user-list.component';
 import { FlashMessageService } from '../../flash-message/flash-message.service';
@@ -17,7 +16,7 @@ describe('UserListComponent', () => {
 	const expectedUsers = [
 		new CustomUser({id: 1, email: 'a@t.si', firstName: 'test', lastName: 'thing', password: ''}),
 		new CustomUser({id: 2, email: 'b@t.si', firstName: 'thing', lastName: 'test', password: ''})
-	]
+	];
 
 	let component: UserListComponent;
 	let fixture: ComponentFixture<UserListComponent>;
@@ -83,7 +82,7 @@ describe('UserListComponent', () => {
 	it('should show error when user lookup fails', () => {
 		expect(userApi.find).not.toHaveBeenCalled();
 		expect(roleApi.findOne).not.toHaveBeenCalled();
-		const expectedErr = "Test error"
+		const expectedErr = 'Test error';
 
 		userApi.find.and.returnValue(Observable.throw(new Error(expectedErr)));
 
@@ -102,12 +101,12 @@ describe('UserListComponent', () => {
 
 		const rows = fixture.debugElement.queryAll(By.css('table tbody tr'));
 		expect(rows.length).toBe(2);
-		const cols = rows[0].queryAll(By.css('td'))
+		const cols = rows[0].queryAll(By.css('td'));
 		expect(cols.length).toBe(5);
-		expect(cols[0].nativeElement.textContent).toBe(expectedUsers[0].id.toString())
-		expect(cols[1].nativeElement.textContent).toBe(expectedUsers[0].firstName)
-		expect(cols[2].nativeElement.textContent).toBe(expectedUsers[0].lastName)
-		expect(cols[3].nativeElement.textContent).toBe(expectedUsers[0].email)
+		expect(cols[0].nativeElement.textContent).toBe(expectedUsers[0].id.toString());
+		expect(cols[1].nativeElement.textContent).toBe(expectedUsers[0].firstName);
+		expect(cols[2].nativeElement.textContent).toBe(expectedUsers[0].lastName);
+		expect(cols[3].nativeElement.textContent).toBe(expectedUsers[0].email);
 	});
 
 	it('should call search when form is submitted', () => {
@@ -128,7 +127,7 @@ describe('UserListComponent', () => {
 
 		userApi.find.and.returnValue(Observable.of(expectedUsers));
 
-		component.searchString = "test";
+		component.searchString = 'test';
 		component.search();
 
 		const searchPattern = `%${component.searchString}%`;
@@ -218,7 +217,7 @@ describe('UserListComponent', () => {
 	});
 
 	it('should call CustomUserApi.patchAttributes on resetPassword (good password)', () => {
-		const expectedPassword = "val";
+		const expectedPassword = 'val';
 		spyOn(component, 'getRandomPassword').and.returnValue(expectedPassword);
 
 		expect(userApi.patchAttributes).not.toHaveBeenCalled();
@@ -228,11 +227,11 @@ describe('UserListComponent', () => {
 		component.resetPassword(expectedUsers[0]);
 
 		expect(userApi.patchAttributes).toHaveBeenCalledWith(expectedUsers[0].id, {password: expectedPassword});
-		flashHelper.expectSuccess("Password reset successfully");
+		flashHelper.expectSuccess('Password reset successfully');
 	});
 
 	it('should call CustomUserApi.deleteById on delete and show message on error', () => {
-		spyOn(component, 'getRandomPassword').and.returnValue('sdf')
+		spyOn(component, 'getRandomPassword').and.returnValue('sdf');
 
 		expect(userApi.patchAttributes).not.toHaveBeenCalled();
 
@@ -241,7 +240,7 @@ describe('UserListComponent', () => {
 		component.resetPassword(expectedUsers[0]);
 
 		expect(userApi.patchAttributes).toHaveBeenCalled();
-		flashHelper.expectFailure("Password reset failed");
+		flashHelper.expectFailure('Password reset failed');
 	});
 
 	it('should check roles for userIsAdmin', () => {
@@ -269,7 +268,7 @@ describe('UserListComponent', () => {
 
 		component.adminRole = new Role({id: 99, name: 'adminTest'});
 
-		const matchingRoleMap = {id: 42}
+		const matchingRoleMap = {id: 42};
 		roleMappingApi.findOne.and.returnValue(Observable.of(matchingRoleMap));
 		roleMappingApi.deleteById.and.returnValue(Observable.of({id: 1}));
 
@@ -293,7 +292,7 @@ describe('UserListComponent', () => {
 
 		component.adminRole = new Role({id: 99, name: 'adminTest'});
 
-		roleMappingApi.findOne.and.returnValue(Observable.throw("error!!!"));
+		roleMappingApi.findOne.and.returnValue(Observable.throw('error!!!'));
 		roleMappingApi.deleteById.and.returnValue(Observable.of({id: 1}));
 
 		const user = new CustomUser({
@@ -314,9 +313,9 @@ describe('UserListComponent', () => {
 
 		component.adminRole = new Role({id: 99, name: 'adminTest'});
 
-		const matchingRoleMap = {id: 42}
+		const matchingRoleMap = {id: 42};
 		roleMappingApi.findOne.and.returnValue(Observable.of(matchingRoleMap));
-		roleMappingApi.deleteById.and.returnValue(Observable.throw("error!!!!"));
+		roleMappingApi.deleteById.and.returnValue(Observable.throw('error!!!!'));
 
 		const user = new CustomUser({
 			id: 1, firstName: '1', lastName: '2', email: 'a', password: 'b',

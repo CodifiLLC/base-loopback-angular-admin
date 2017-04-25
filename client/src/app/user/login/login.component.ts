@@ -14,7 +14,8 @@ import { Role, SDKToken } from '../../shared/sdk/models';
 export class LoginComponent implements OnInit {
 	loginInfo = new LoginModel();
 
-	constructor(private userApi: CustomUserApi, private auth: LoopBackAuth, private router: Router, private flashMessageService: FlashMessageService) {
+	constructor(private userApi: CustomUserApi, private auth: LoopBackAuth, private router: Router,
+				private flashMessageService: FlashMessageService) {
 		this.loginInfo.rememberMe = true;
 	}
 
@@ -29,7 +30,7 @@ export class LoginComponent implements OnInit {
 				this.auth.setUser(token.user);
 				this.auth.save();
 			}, err => {
-				console.log('unable to lookup roles', err)
+				console.log('unable to lookup roles', err);
 			});
 			this.flashMessageService.showMessage({message: 'Logged in successfully', messageClass: 'success'});
 			this.router.navigateByUrl('/');

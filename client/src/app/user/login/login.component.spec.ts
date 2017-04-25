@@ -1,4 +1,4 @@
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs/Rx';
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -10,84 +10,87 @@ import { LoginComponent } from './login.component';
 import { CustomUserApi, LoopBackAuth } from '../../shared/sdk/services';
 
 describe('LoginComponent', () => {
-  let component: LoginComponent;
-  let fixture: ComponentFixture<LoginComponent>;
+	let component: LoginComponent;
+	let fixture: ComponentFixture<LoginComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ LoginComponent ],
-      providers: [
-        {provide: CustomUserApi, useValue: {
-          login: jasmine.createSpy('login'),
-          getRoles: jasmine.createSpy('getRoles')
-        }},
-        {provide: LoopBackAuth, useValue: {
-          setUser: jasmine.createSpy('setUser'),
-          save: jasmine.createSpy('save')
-        }},
-        {provide: Router, useValue: {
-          navigateByUrl: jasmine.createSpy('navigateByUrl')
-        }},
-        {provide: FlashMessageService, useValue: {
-          showMessage: jasmine.createSpy('showMessage')
-        }}
-      ],
-      imports: [FormsModule]
-    })
-    .compileComponents();
-  }));
+	let authApi: any;
+	let flashService: any;
+	let userApi: any;
+	let router: any;
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(LoginComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+	beforeEach(async(() => {
+		TestBed.configureTestingModule({
+			declarations: [ LoginComponent ],
+			providers: [
+				{provide: CustomUserApi, useValue: {
+					login: jasmine.createSpy('login'),
+					getRoles: jasmine.createSpy('getRoles')
+				}},
+				{provide: LoopBackAuth, useValue: {
+					setUser: jasmine.createSpy('setUser'),
+					save: jasmine.createSpy('save')
+				}},
+				{provide: Router, useValue: {
+					navigateByUrl: jasmine.createSpy('navigateByUrl')
+				}},
+				{provide: FlashMessageService, useValue: {
+					showMessage: jasmine.createSpy('showMessage')
+				}}
+			],
+			imports: [FormsModule]
+		})
+			.compileComponents();
+	}));
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	beforeEach(() => {
+		fixture = TestBed.createComponent(LoginComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
 
-  it('should call login when form is submitted', () => {
-    fixture.detectChanges();
-    const form = fixture.debugElement.query(By.css('form'));
-    spyOn(component, 'login');
+		authApi = fixture.debugElement.injector.get(LoopBackAuth);
+		flashService = fixture.debugElement.injector.get(FlashMessageService);
+		userApi = fixture.debugElement.injector.get(CustomUserApi);
+		router = fixture.debugElement.injector.get(Router);
+	});
 
-    //button.nativeElement.click();
-    form.triggerEventHandler('submit', null);
-    fixture.detectChanges();
-    expect(component.login).toHaveBeenCalled();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 
-  it('should call login on click', () => {
-    const userApi = fixture.debugElement.injector.get(CustomUserApi);
-    const router = fixture.debugElement.injector.get(Router);
-    const authApi = fixture.debugElement.injector.get(LoopBackAuth);
-    const flashMessageService = fixture.debugElement.injector.get(FlashMessageService);
+	it('should call login when form is submitted', () => {
+		fixture.detectChanges();
+		const form = fixture.debugElement.query(By.css('form'));
+		spyOn(component, 'login');
 
-    userApi.login.and.returnValue(Observable.of({user: {id: 1, email: 't@t.si', firstname: 'test', lastname: 'thing'}}));
-    userApi.getRoles.and.returnValue(Observable.of({id: 1}));
+		//button.nativeElement.click();
+		form.triggerEventHandler('submit', null);
+		fixture.detectChanges();
+		expect(component.login).toHaveBeenCalled();
+	});
 
-    expect(userApi.login).not.toHaveBeenCalled();
-    component.login();
-    expect(userApi.login).toHaveBeenCalled();
-    expect(userApi.getRoles).toHaveBeenCalledWith(1);
-    expect(flashMessageService.showMessage).toHaveBeenCalledWith({message: 'Logged in successfully', messageClass: 'success'});
-    expect(router.navigateByUrl).toHaveBeenCalledWith('/');
-    expect(authApi.setUser).toHaveBeenCalled();
-    expect(authApi.save).toHaveBeenCalled();
-  });
+	it('should call login on click', () => {
 
-  it('should show error on failed login', () => {
-    const userApi = fixture.debugElement.injector.get(CustomUserApi);
-    const router = fixture.debugElement.injector.get(Router);
-    const flashMessageService = fixture.debugElement.injector.get(FlashMessageService);
+		userApi.login.and.returnValue(Observable.of({user: {id: 1, email: 't@t.si', firstname: 'test', lastname: 'thing'}}));
+		userApi.getRoles.and.returnValue(Observable.of({id: 1}));
 
-    userApi.login.and.returnValue(Observable.throw('test error'));
+		expect(userApi.login).not.toHaveBeenCalled();
+		component.login();
+		expect(userApi.login).toHaveBeenCalled();
+		expect(userApi.getRoles).toHaveBeenCalledWith(1);
+		expect(flashService.showMessage).toHaveBeenCalledWith({message: 'Logged in successfully', messageClass: 'success'});
+		expect(router.navigateByUrl).toHaveBeenCalledWith('/');
+		expect(authApi.setUser).toHaveBeenCalled();
+		expect(authApi.save).toHaveBeenCalled();
+	});
 
-    expect(userApi.login).not.toHaveBeenCalled();
-    component.login();
-    expect(userApi.login).toHaveBeenCalled();
-    expect(flashMessageService.showMessage).toHaveBeenCalledWith({message: 'Invalid Login', messageClass: 'danger'});
-    expect(router.navigateByUrl).not.toHaveBeenCalled();
-  });
+	it('should show error on failed login', () => {
+
+		userApi.login.and.returnValue(Observable.throw('test error'));
+
+		expect(userApi.login).not.toHaveBeenCalled();
+		component.login();
+		expect(userApi.login).toHaveBeenCalled();
+		expect(flashService.showMessage).toHaveBeenCalledWith({message: 'Invalid Login', messageClass: 'danger'});
+		expect(router.navigateByUrl).not.toHaveBeenCalled();
+	});
 });

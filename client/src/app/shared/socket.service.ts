@@ -1,8 +1,8 @@
-import { Injectable, Inject, Optional } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs/Rx';
+import { Subject } from 'rxjs/Subject';
 import { LoopBackConfig } from './sdk/lb.config';
 
-import * as io from "socket.io-client";
+import * as io from 'socket.io-client';
 
 export class SocketMessage {
 	event: string;
@@ -11,7 +11,7 @@ export class SocketMessage {
 
 export class SocketService {
 	//set up an array to keep track of what channels are being listened to
-	private channelList:string[] = [];
+	private channelList: string[] = [];
 
 	//set up a map to hold references to listeners for given events
 	private eventMap = new Map<string, {
@@ -31,8 +31,8 @@ export class SocketService {
 	}
 
 	watchEvent (eventName: string): Observable<SocketMessage> {
-		//console.log("request to watch", eventName, this.eventMap.get(eventName));
-		let subject = this.getSubjectForEvent(eventName);
+		//console.log('request to watch', eventName, this.eventMap.get(eventName));
+		const subject = this.getSubjectForEvent(eventName);
 
 		// Return observable which follows the events on our subject (and updates reference counts on close)
 		return Observable.create((observer: any) => {
@@ -46,7 +46,7 @@ export class SocketService {
 					eventSubscription.count--;
 
 					//if all listeners for this event have been closed, get rid of the listener
-					if (eventSubscription.count == 0) {
+					if (eventSubscription.count === 0) {
 						this.eventMap.delete(eventName);
 						this.socket.removeListener(eventName);
 					} else {
@@ -62,7 +62,7 @@ export class SocketService {
 
 		let subject: Subject<SocketMessage>;
 
-		if (this.eventMap.has(eventName)){
+		if (this.eventMap.has(eventName)) {
 			//if this event exists in our listener cache, grab it and update the reference count
 			const subscr = this.eventMap.get(eventName);
 			subscr.count++;
@@ -93,7 +93,7 @@ export class SocketService {
 
 	leaveChannel (channelName: string) {
 		//if we aren't listening to this channel, ignore this request
-		if (this.channelList.indexOf(channelName) == -1) return;
+		if (this.channelList.indexOf(channelName) === -1) return;
 
 		this.channelList.splice(this.channelList.indexOf(channelName), 1);
 		this.socket.emit('leave-channel', channelName);

@@ -1,12 +1,11 @@
 /* tslint:disable:no-unused-variable */
 
-import { Component } from '@angular/core';
-import { TestBed, async } from '@angular/core/testing';
-import { LoginAwareComponent } from "./login-aware-component";
+import {  async } from '@angular/core/testing';
+import { LoginAwareComponent } from './login-aware-component';
 
 describe('LoginAwareComponent', () => {
 	let component: LoginAwareComponent;
-	let authModule = {
+	const authModule = {
 		getCurrentUserId: jasmine.createSpy('getCurrentUserId'),
 		getCurrentUserData: jasmine.createSpy('getCurrentUserData')
 	};
@@ -25,7 +24,7 @@ describe('LoginAwareComponent', () => {
 
 		//test against normal user (with no role)
 		spy.and.returnValue({id: 1, roles: []});
-		expect(component.isSuperuser()).toBeFalsy();;
+		expect(component.isSuperuser()).toBeFalsy();
 
 		//test against normal user (with 'normal' role)
 		spy.and.returnValue({id: 1, roles: [{id: 2, name: 'normal'}]});

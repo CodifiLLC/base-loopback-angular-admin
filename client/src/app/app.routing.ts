@@ -1,11 +1,11 @@
-import {ProfileComponent} from "./user/profile/profile.component";
-import {LoginComponent} from "./user/login/login.component";
-import {AdminComponent} from "./admin/admin.component";
-import {UserListComponent} from "./admin/user-list/user-list.component";
-import {CreateAccountComponent} from "./user/create-account/create-account.component"
-import {DashboardComponent} from "./dashboard/dashboard.component";
-import {ModuleWithProviders, Component} from "@angular/core";
-import {Routes, RouterModule} from "@angular/router";
+import {ProfileComponent} from './user/profile/profile.component';
+import {LoginComponent} from './user/login/login.component';
+import {AdminComponent} from './admin/admin.component';
+import {UserListComponent} from './admin/user-list/user-list.component';
+import {CreateAccountComponent} from './user/create-account/create-account.component';
+import {DashboardComponent} from './dashboard/dashboard.component';
+import {ModuleWithProviders} from '@angular/core';
+import {Routes, RouterModule} from '@angular/router';
 import { LoggedInGuard } from './guards/login';
 import { SuperuserGuard } from './guards/superuser';
 

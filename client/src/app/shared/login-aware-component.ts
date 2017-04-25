@@ -10,7 +10,7 @@ export class LoginAwareComponent {
 
 	isSuperuser () {
 		const curUser: CustomUser = this.auth.getCurrentUserData();
-		return curUser && curUser.roles && curUser.roles.find(r => r.name == "admin");
+		return curUser && curUser.roles && curUser.roles.find(r => r.name === 'admin');
 	}
 
 	getUserDisplayName () {

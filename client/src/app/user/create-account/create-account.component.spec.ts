@@ -1,5 +1,5 @@
 /* tslint:disable:no-unused-variable */
-import { Observable } from "rxjs";
+import { Observable } from 'rxjs/Rx';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
@@ -8,78 +8,80 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { CustomUserApi } from '../../shared/sdk/services';
 import { CreateAccountComponent } from './create-account.component';
-import { FlashMessageService } from "../../flash-message/flash-message.service";
+import { FlashMessageService } from '../../flash-message/flash-message.service';
 
 describe('CreateAccountComponent', () => {
-  let component: CreateAccountComponent;
-  let fixture: ComponentFixture<CreateAccountComponent>;
+	let component: CreateAccountComponent;
+	let fixture: ComponentFixture<CreateAccountComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ CreateAccountComponent ],
-      providers: [
-        {provide: CustomUserApi, useValue: {
-          create: jasmine.createSpy('create')
-        }},
-        {provide: Router, useValue: {
-          navigateByUrl: jasmine.createSpy('navigateByUrl')
-        }},
-        {provide: FlashMessageService, useValue: {
-          showMessage: jasmine.createSpy('showMessage')
-        }}
-      ],
-      imports: [FormsModule, RouterTestingModule.withRoutes([]) ]
-    })
-    .compileComponents();
-  }));
+	let flashService: any;
+	let router: any;
+	let userApi: any;
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(CreateAccountComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+	beforeEach(async(() => {
+		TestBed.configureTestingModule({
+			declarations: [ CreateAccountComponent ],
+			providers: [
+				{provide: CustomUserApi, useValue: {
+					create: jasmine.createSpy('create')
+				}},
+				{provide: Router, useValue: {
+					navigateByUrl: jasmine.createSpy('navigateByUrl')
+				}},
+				{provide: FlashMessageService, useValue: {
+					showMessage: jasmine.createSpy('showMessage')
+				}}
+			],
+			imports: [FormsModule, RouterTestingModule.withRoutes([]) ]
+		})
+			.compileComponents();
+	}));
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	beforeEach(() => {
+		fixture = TestBed.createComponent(CreateAccountComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
 
-  it('should call createUser when form is submitted', () => {
-     fixture.detectChanges();
-     const form = fixture.debugElement.query(By.css('form'));
-     spyOn(component, 'createUser');
+		flashService = fixture.debugElement.injector.get(FlashMessageService);
+		router = fixture.debugElement.injector.get(Router);
+		userApi = fixture.debugElement.injector.get(CustomUserApi);
+	});
 
-     form.triggerEventHandler('submit', null);
-     fixture.detectChanges();
-     expect(component.createUser).toHaveBeenCalled();
-   });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 
-  it('should create a new account', () => {
-     const userApi = fixture.debugElement.injector.get(CustomUserApi);
-     const router = fixture.debugElement.injector.get(Router);
-     const flashService = fixture.debugElement.injector.get(FlashMessageService);
+	it('should call createUser when form is submitted', () => {
+		fixture.detectChanges();
+		const form = fixture.debugElement.query(By.css('form'));
+		spyOn(component, 'createUser');
 
-     userApi.create.and.returnValue(Observable.of(
-       {id: 1, email: 'test@t.com', firstname: 'test', lastname: 'thing', password: 'test1234'}
-     ));
+		form.triggerEventHandler('submit', null);
+		fixture.detectChanges();
+		expect(component.createUser).toHaveBeenCalled();
+	});
 
-     expect(userApi.create).not.toHaveBeenCalled();
-     component.createUser();
-     expect(userApi.create).toHaveBeenCalled();
-     expect(flashService.showMessage).toHaveBeenCalledWith({message: 'Account created successfully', messageClass: 'success'})
-     expect(router.navigateByUrl).toHaveBeenCalledWith('/');
-  });
+	it('should create a new account', () => {
+		userApi.create.and.returnValue(Observable.of(
+			{id: 1, email: 'test@t.com', firstname: 'test', lastname: 'thing', password: 'test1234'}
+		));
 
-  it('should show error when email already in use', () => {
-     const userApi = fixture.debugElement.injector.get(CustomUserApi);
-     const router = fixture.debugElement.injector.get(Router);
-     const flashService = fixture.debugElement.injector.get(FlashMessageService);
+		expect(userApi.create).not.toHaveBeenCalled();
+		component.createUser();
+		expect(userApi.create).toHaveBeenCalled();
+		expect(flashService.showMessage).toHaveBeenCalledWith(
+			{message: 'Account created successfully', messageClass: 'success'}
+		);
+		expect(router.navigateByUrl).toHaveBeenCalledWith('/');
+	});
 
-     userApi.create.and.returnValue(Observable.throw('test error'));
+	it('should show error when email already in use', () => {
+		userApi.create.and.returnValue(Observable.throw('test error'));
 
-     expect(userApi.create).not.toHaveBeenCalled();
-     component.createUser();
-     expect(userApi.create).toHaveBeenCalled();
-     expect(flashService.showMessage).toHaveBeenCalledWith({message: 'Email already in use', messageClass: 'danger'})
-     expect(router.navigateByUrl).not.toHaveBeenCalled();
-  });
+		expect(userApi.create).not.toHaveBeenCalled();
+		component.createUser();
+		expect(userApi.create).toHaveBeenCalled();
+		expect(flashService.showMessage).toHaveBeenCalledWith({message: 'Email already in use', messageClass: 'danger'});
+		expect(router.navigateByUrl).not.toHaveBeenCalled();
+	});
 });

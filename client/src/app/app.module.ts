@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { RouterModule } from "@angular/router";
+import { RouterModule } from '@angular/router';
 import { BsDropdownModule, CollapseModule } from 'ngx-bootstrap';
 
 import { LoggedInGuard } from './guards/login';
@@ -22,33 +22,33 @@ import { SocketService } from './shared/socket.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    CreateAccountComponent,
-    ProfileComponent,
-    AdminComponent,
-    UserListComponent,
-    //ResetPasswordComponent,
-    FlashMessageComponent,
-    DashboardComponent
-  ],
-  imports: [
-    BrowserModule,
-    BsDropdownModule.forRoot(),
-    CollapseModule.forRoot(),
-    FormsModule,
-    HttpModule,
-    routing,
-    RouterModule,
-    SDKBrowserModule.forRoot()
-  ],
-  providers: [
-    LoggedInGuard,
-    SuperuserGuard,
-    FlashMessageService,
-    SocketService
-  ],
-  bootstrap: [AppComponent]
+	declarations: [
+		AppComponent,
+		LoginComponent,
+		CreateAccountComponent,
+		ProfileComponent,
+		AdminComponent,
+		UserListComponent,
+		//ResetPasswordComponent,
+		FlashMessageComponent,
+		DashboardComponent
+	],
+	imports: [
+		BrowserModule,
+		BsDropdownModule.forRoot(),
+		CollapseModule.forRoot(),
+		FormsModule,
+		HttpModule,
+		routing,
+		RouterModule,
+		SDKBrowserModule.forRoot()
+	],
+	providers: [
+		LoggedInGuard,
+		SuperuserGuard,
+		FlashMessageService,
+		SocketService
+	],
+	bootstrap: [AppComponent]
 })
 export class AppModule { }

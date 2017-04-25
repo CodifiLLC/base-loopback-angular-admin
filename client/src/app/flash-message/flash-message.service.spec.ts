@@ -15,8 +15,8 @@ describe('FlashMessageService', () => {
 	}));
 	it('should pass messages to event stream', inject([FlashMessageService], (service: FlashMessageService) => {
 		const receivedMessages = [];
-		const expectedMessages = [{message: "test", messageClass: 'a'}, {message: "test2", messageClass: 'b'}]
-		let subscr = service.messagesToShow$.subscribe(message => {
+		const expectedMessages = [{message: 'test', messageClass: 'a'}, {message: 'test2', messageClass: 'b'}];
+		const subscr = service.messagesToShow$.subscribe(message => {
 			receivedMessages.push(message);
 		});
 		service.showMessage(expectedMessages[0]);

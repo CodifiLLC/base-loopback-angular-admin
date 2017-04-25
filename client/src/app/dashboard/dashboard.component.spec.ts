@@ -1,12 +1,11 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Rx';
 
 import { DashboardComponent } from './dashboard.component';
 import { LoopBackAuth } from '../shared/sdk/services';
-import { SocketService, SocketMessage } from '../shared/socket.service';
+import { SocketService } from '../shared/socket.service';
 
 describe('DashboardComponent', () => {
 	let component: DashboardComponent;
@@ -18,7 +17,7 @@ describe('DashboardComponent', () => {
 			providers: [
 				{provide: LoopBackAuth, useValue: {}},
 				{provide: SocketService, useValue: {
-					watchEvent: jasmine.createSpy("watchEvent").and.returnValue(Observable.from([]))
+					watchEvent: jasmine.createSpy('watchEvent').and.returnValue(Observable.from([]))
 				}}
 			]
 		})
@@ -41,7 +40,7 @@ describe('DashboardComponent', () => {
 		spyOn(component, 'isLoggedIn').and.returnValue(true);
 		spyOn(component, 'getUserDisplayName').and.returnValue(expectedName);
 		fixture.detectChanges();
-		let message = fixture.debugElement.query(By.css('p'));
+		const message = fixture.debugElement.query(By.css('p'));
 		expect(message).toBeTruthy();
 		expect(message.nativeElement.textContent.trim()).toBe('You are logged in as ' + expectedName);
 		expect(component.isLoggedIn).toHaveBeenCalled();
@@ -52,7 +51,7 @@ describe('DashboardComponent', () => {
 		spyOn(component, 'isLoggedIn').and.returnValue(false);
 		spyOn(component, 'getUserDisplayName');
 		fixture.detectChanges();
-		let message = fixture.debugElement.query(By.css('p'));
+		const message = fixture.debugElement.query(By.css('p'));
 		expect(message).toBeTruthy();
 		expect(message.nativeElement.textContent.trim()).toBe('You are not logged in');
 		expect(component.isLoggedIn).toHaveBeenCalled();

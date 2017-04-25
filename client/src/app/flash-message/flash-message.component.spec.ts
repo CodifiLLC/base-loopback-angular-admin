@@ -1,8 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs/Rx';
 
 import { FlashMessageComponent } from './flash-message.component';
 import { FlashMessageService } from './flash-message.service';
@@ -16,7 +15,7 @@ describe('FlashMessageComponent', () => {
 			declarations: [ FlashMessageComponent ],
 			providers: [
 				{provide: FlashMessageService, useValue: {
-					messagesToShow$: Observable.empty(),//.from([]),
+					messagesToShow$: Observable.empty(),
 					showMessage: jasmine.createSpy('showMessage')
 				}}
 			]
@@ -58,10 +57,10 @@ describe('FlashMessageComponent', () => {
 
 		expect(component.currentMessage).toBeUndefined();
 
-		const expectedMessages = [{message: "test", messageClass: 'a'}, {message: "test2", messageClass: 'b'}]
+		const expectedMessages = [{message: 'test', messageClass: 'a'}, {message: 'test2', messageClass: 'b'}];
 
 		//throw this in a try in case something goes wrong (I don't want the clock to crash the rest of the tests)
-		try{
+		try {
 			component.showMessage(expectedMessages[0]);
 			component.showMessage(expectedMessages[1]);
 			expect(component.currentMessage).toEqual(expectedMessages[0]);
@@ -74,8 +73,8 @@ describe('FlashMessageComponent', () => {
 
 			jasmine.clock().tick(5000);
 			expect(component.currentMessage).toBeNull();
-		}catch(err){
-			return fail('Something went wrong!!!')
+		} catch (err) {
+			return fail('Something went wrong!!!');
 		}
 		jasmine.clock().uninstall();
 		done();

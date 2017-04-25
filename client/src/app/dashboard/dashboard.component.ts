@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { LoginAwareComponent } from "../shared/login-aware-component";
+import { LoginAwareComponent } from '../shared/login-aware-component';
 import { LoopBackAuth } from '../shared/sdk/services';
 import { SocketService, SocketMessage } from '../shared/socket.service';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
 	selector: 'app-dashboard',
@@ -15,7 +15,7 @@ export class DashboardComponent extends LoginAwareComponent implements OnInit, O
 	constructor(auth: LoopBackAuth, socket: SocketService) {
 		super(auth);
 
-		this.socketSubscription = socket.watchEvent("stuff").subscribe((message: SocketMessage) => {
+		this.socketSubscription = socket.watchEvent('stuff').subscribe((message: SocketMessage) => {
 			console.log('got message from socket', message);
 		});
 	}
