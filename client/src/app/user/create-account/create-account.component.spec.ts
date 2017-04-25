@@ -2,14 +2,13 @@
 import { Observable } from "rxjs";
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { CustomUserApi } from '../shared/sdk/services';
+import { CustomUserApi } from '../../shared/sdk/services';
 import { CreateAccountComponent } from './create-account.component';
-import { FlashMessageService } from "../flash-message/flash-message.service";
+import { FlashMessageService } from "../../flash-message/flash-message.service";
 
 describe('CreateAccountComponent', () => {
   let component: CreateAccountComponent;

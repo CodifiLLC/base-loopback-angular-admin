@@ -1,9 +1,9 @@
-import {Router} from "@angular/router";
+import {Router} from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { FlashMessageService } from "../flash-message/flash-message.service";
+import { FlashMessageService } from '../../flash-message/flash-message.service';
 import { LoginModel } from './login.model';
-import { CustomUserApi, LoopBackAuth } from '../shared/sdk/services';
-import { Role, SDKToken } from '../shared/sdk/models';
+import { CustomUserApi, LoopBackAuth } from '../../shared/sdk/services';
+import { Role, SDKToken } from '../../shared/sdk/models';
 
 
 @Component({
@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit {
 	loginInfo = new LoginModel();
 
 	constructor(private userApi: CustomUserApi, private auth: LoopBackAuth, private router: Router, private flashMessageService: FlashMessageService) {
-		this.loginInfo.rememberMe = true; 
+		this.loginInfo.rememberMe = true;
 	}
 
 	ngOnInit() {

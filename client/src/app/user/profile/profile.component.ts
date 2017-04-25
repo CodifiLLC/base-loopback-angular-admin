@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
-import {Router, ActivatedRoute} from "@angular/router";
-import { Subscription } from 'rxjs';
-import { CustomUserApi, LoopBackAuth } from '../shared/sdk/services';
-import {FlashMessageService} from "../flash-message/flash-message.service";
-import {CustomUser} from '../shared/sdk/models';
+import {Router, ActivatedRoute} from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
+import { CustomUserApi, LoopBackAuth } from '../../shared/sdk/services';
+import {FlashMessageService} from '../../flash-message/flash-message.service';
+import {CustomUser} from '../../shared/sdk/models';
 import {LoginModel} from '../login/login.model';
 
 @Component({

@@ -1,17 +1,16 @@
 /* tslint:disable:no-unused-variable */
-import { Observable } from "rxjs";
+import { Observable } from 'rxjs/Observable';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Location } from '@angular/common';
-import { Router, ActivatedRoute } from "@angular/router";
+import { Router, ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { ProfileComponent } from './profile.component';
-import { CustomUserApi, LoopBackAuth } from '../shared/sdk/services';
-import { CustomUser } from '../shared/sdk/models';
-import { FlashMessageService } from "../flash-message/flash-message.service";
+import { CustomUserApi, LoopBackAuth } from '../../shared/sdk/services';
+import { CustomUser } from '../../shared/sdk/models';
+import { FlashMessageService } from '../../flash-message/flash-message.service';
 
 describe('ProfileComponent', () => {
   let component: ProfileComponent;

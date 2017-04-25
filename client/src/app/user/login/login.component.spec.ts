@@ -1,15 +1,13 @@
-import {Observable} from "rxjs";
+import {Observable} from 'rxjs/Observable';
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 
-import { FlashMessageService } from '../flash-message/flash-message.service';
+import { FlashMessageService } from '../../flash-message/flash-message.service';
 import { LoginComponent } from './login.component';
-import { CustomUserApi, LoopBackAuth } from '../shared/sdk/services';
+import { CustomUserApi, LoopBackAuth } from '../../shared/sdk/services';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;

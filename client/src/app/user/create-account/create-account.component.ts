@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {FlashMessageService} from "../flash-message/flash-message.service";
-import {CustomUser} from '../shared/sdk/models/CustomUser';
-import {CustomUserApi} from '../shared/sdk/services/custom';
+import {FlashMessageService} from "../../flash-message/flash-message.service";
+import {CustomUser} from '../../shared/sdk/models/CustomUser';
+import {CustomUserApi} from '../../shared/sdk/services/custom';
 
 
 @Component({
