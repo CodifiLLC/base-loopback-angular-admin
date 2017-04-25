@@ -1,0 +1,62 @@
+#!/bin/bash
+
+# An example hook script to verify what is about to be pushed.  Called by "git
+# push" after it has checked the remote status, but before anything has been
+# pushed.  If this script exits with a non-zero status nothing will be pushed.
+#
+# This hook is called with the following parameters:
+#
+# $1 -- Name of the remote to which the push is being done
+# $2 -- URL to which the push is being done
+#
+# If pushing without using a named remote those arguments will be equal.
+#
+# Information about the commits which are being pushed is supplied as lines to
+# the standard input in the form:
+#
+#   <local ref> <local sha1> <remote ref> <remote sha1>
+#
+
+remote="$1"
+url="$2"
+
+z40=0000000000000000000000000000000000000000 #null sha (delete or new)
+
+
+while read local_ref local_sha remote_ref remote_sha
+do
+	#echo "$local_ref read"
+	current_branch=$(git symbolic-ref --short HEAD)
+	if [ "refs/heads/master" = "$local_ref" ] ; then
+		echo "Running tests before pushing master..."
+		echo
+
+		#determine if there are changes and stash them if present
+		git diff-index --quiet HEAD --
+		HAS_CHANGES=$?
+
+		if [ $HAS_CHANGES -ne 0 ]; then
+			git stash save "WIP: pre-push test -- stashing on branch $current_branch"
+		fi
+
+		git checkout master
+
+		npm test
+		TEST_STATUS=$?
+		if [ $TEST_STATUS -ne 0 ]; then
+			echo
+			echo "You have failing tests. Please correct them before pushing."
+			echo
+		fi
+
+		#restore state
+		git checkout "$current_branch"
+		if [ $HAS_CHANGES -ne 0 ]; then
+			git stash pop
+		fi
+
+		exit $TEST_STATUS;
+	fi
+done
+
+exit 0
