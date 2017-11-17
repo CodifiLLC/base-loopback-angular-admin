@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { FlashMessageService } from '../../flash-message/flash-message.service';
 import { LoginComponent } from './login.component';
 import { CustomUserApi, LoopBackAuth } from '../../shared/sdk/services';
+import { LoginPageService } from '../../login-page-service/login-page.service';
 
 describe('LoginComponent', () => {
 	let component: LoginComponent;
@@ -17,6 +18,7 @@ describe('LoginComponent', () => {
 	let flashService: any;
 	let userApi: any;
 	let router: any;
+	let pageService: any;
 
 	beforeEach(async(() => {
 		TestBed.configureTestingModule({
@@ -35,11 +37,15 @@ describe('LoginComponent', () => {
 				}},
 				{provide: FlashMessageService, useValue: {
 					showMessage: jasmine.createSpy('showMessage')
+				}},
+				{provide: LoginPageService, useValue: {
+					setPage: jasmine.createSpy('LoginPageService.setPage'),
+					getPage: jasmine.createSpy('LoginPageService.getPage').and.returnValue(null)
 				}}
 			],
 			imports: [FormsModule]
 		})
-			.compileComponents();
+		.compileComponents();
 	}));
 
 	beforeEach(() => {
@@ -51,6 +57,7 @@ describe('LoginComponent', () => {
 		flashService = fixture.debugElement.injector.get(FlashMessageService);
 		userApi = fixture.debugElement.injector.get(CustomUserApi);
 		router = fixture.debugElement.injector.get(Router);
+		pageService = fixture.debugElement.injector.get(LoginPageService);
 	});
 
 	it('should create', () => {
@@ -79,6 +86,23 @@ describe('LoginComponent', () => {
 		expect(userApi.getRoles).toHaveBeenCalledWith(1);
 		expect(flashService.showMessage).toHaveBeenCalledWith({message: 'Logged in successfully', messageClass: 'success'});
 		expect(router.navigateByUrl).toHaveBeenCalledWith('/');
+		expect(authApi.setUser).toHaveBeenCalled();
+		expect(authApi.save).toHaveBeenCalled();
+	});
+
+	it('should redirect to specific page if pageservice has value', () => {
+		const requestedPage = 'test';
+
+		userApi.login.and.returnValue(Observable.of({user: {id: 1, email: 't@t.si', firstname: 'test', lastname: 'thing'}}));
+		userApi.getRoles.and.returnValue(Observable.of({id: 1}));
+		pageService.getPage.and.returnValue(requestedPage);
+
+		expect(userApi.login).not.toHaveBeenCalled();
+		component.login();
+		expect(userApi.login).toHaveBeenCalled();
+		expect(userApi.getRoles).toHaveBeenCalledWith(1);
+		expect(flashService.showMessage).toHaveBeenCalledWith({message: 'Logged in successfully', messageClass: 'success'});
+		expect(router.navigateByUrl).toHaveBeenCalledWith(requestedPage);
 		expect(authApi.setUser).toHaveBeenCalled();
 		expect(authApi.save).toHaveBeenCalled();
 	});

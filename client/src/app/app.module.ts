@@ -20,6 +20,7 @@ import { FlashMessageComponent } from './flash-message/flash-message.component';
 import { FlashMessageService } from './flash-message/flash-message.service';
 import { SocketService } from './shared/socket.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import {LoginPageService} from './login-page-service/login-page.service'
 
 @NgModule({
 	declarations: [
@@ -47,7 +48,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 		LoggedInGuard,
 		SuperuserGuard,
 		FlashMessageService,
-		SocketService
+		SocketService,
+		LoginPageService
 	],
 	bootstrap: [AppComponent]
 })

@@ -4,6 +4,7 @@ import { FlashMessageService } from '../../flash-message/flash-message.service';
 import { LoginModel } from './login.model';
 import { CustomUserApi, LoopBackAuth } from '../../shared/sdk/services';
 import { Role, SDKToken } from '../../shared/sdk/models';
+import {LoginPageService} from '../../login-page-service/login-page.service';
 
 
 @Component({
@@ -15,7 +16,7 @@ export class LoginComponent implements OnInit {
 	loginInfo = new LoginModel();
 
 	constructor(private userApi: CustomUserApi, private auth: LoopBackAuth, private router: Router,
-				private flashMessageService: FlashMessageService) {
+				private flashMessageService: FlashMessageService, private pageService: LoginPageService) {
 		this.loginInfo.rememberMe = true;
 	}
 
@@ -33,7 +34,7 @@ export class LoginComponent implements OnInit {
 				console.log('unable to lookup roles', err);
 			});
 			this.flashMessageService.showMessage({message: 'Logged in successfully', messageClass: 'success'});
-			this.router.navigateByUrl('/');
+			this.router.navigateByUrl(this.pageService.getPage() || '/');
 		}, err => {
 			this.flashMessageService.showMessage({message: 'Invalid Login', messageClass: 'danger'});
 		});
