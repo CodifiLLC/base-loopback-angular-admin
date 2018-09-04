@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LoginAwareComponent } from '../shared/login-aware-component';
 import { LoopBackAuth } from '../shared/sdk/services';
 import { SocketService, SocketMessage } from '../shared/socket.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 @Component({
 	selector: 'app-dashboard',

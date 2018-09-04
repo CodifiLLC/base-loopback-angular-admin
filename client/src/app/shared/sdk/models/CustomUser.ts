@@ -13,11 +13,10 @@ export interface CustomUserInterface {
   "postalCode"?: string;
   "realm"?: string;
   "username"?: string;
-  "password": string;
   "email": string;
   "emailVerified"?: boolean;
-  "verificationToken"?: string;
   "id"?: number;
+  "password"?: string;
   accessTokens?: any[];
   roles?: Role[];
 }
@@ -31,11 +30,10 @@ export class CustomUser implements CustomUserInterface {
   "postalCode": string;
   "realm": string;
   "username": string;
-  "password": string;
   "email": string;
   "emailVerified": boolean;
-  "verificationToken": string;
   "id": number;
+  "password": string;
   accessTokens: any[];
   roles: Role[];
   constructor(data?: CustomUserInterface) {
@@ -68,6 +66,8 @@ export class CustomUser implements CustomUserInterface {
     return {
       name: 'CustomUser',
       plural: 'CustomUsers',
+      path: 'CustomUsers',
+      idName: 'id',
       properties: {
         "firstName": {
           name: 'firstName',
@@ -101,10 +101,6 @@ export class CustomUser implements CustomUserInterface {
           name: 'username',
           type: 'string'
         },
-        "password": {
-          name: 'password',
-          type: 'string'
-        },
         "email": {
           name: 'email',
           type: 'string'
@@ -113,25 +109,33 @@ export class CustomUser implements CustomUserInterface {
           name: 'emailVerified',
           type: 'boolean'
         },
-        "verificationToken": {
-          name: 'verificationToken',
-          type: 'string'
-        },
         "id": {
           name: 'id',
           type: 'number'
+        },
+        "password": {
+          name: 'password',
+          type: 'string'
         },
       },
       relations: {
         accessTokens: {
           name: 'accessTokens',
           type: 'any[]',
-          model: ''
+          model: '',
+          relationType: 'hasMany',
+                  keyFrom: 'id',
+          keyTo: 'userId'
         },
         roles: {
           name: 'roles',
           type: 'Role[]',
-          model: 'Role'
+          model: 'Role',
+          relationType: 'hasMany',
+          modelThrough: 'RoleMapping',
+          keyThrough: 'roleId',
+          keyFrom: 'id',
+          keyTo: 'principalId'
         },
       }
     }

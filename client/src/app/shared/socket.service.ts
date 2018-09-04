@@ -1,5 +1,5 @@
-import { Observable } from 'rxjs/Rx';
-import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 import { LoopBackConfig } from './sdk/lb.config';
 
 import * as io from 'socket.io-client';

@@ -1,15 +1,14 @@
 /* tslint:disable */
 import { Injectable, Inject, Optional } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { SDKModels } from './SDKModels';
 import { BaseLoopBackApi } from '../core/base.service';
 import { LoopBackConfig } from '../../lb.config';
 import { LoopBackAuth } from '../core/auth.service';
 import { LoopBackFilter,  } from '../../models/BaseModels';
-import { JSONSearchParams } from '../core/search.params';
 import { ErrorHandler } from '../core/error.service';
-import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Rx';
+import { Observable, Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Role } from '../../models/Role';
 import { RoleMapping } from '../../models/RoleMapping';
 
@@ -21,13 +20,12 @@ import { RoleMapping } from '../../models/RoleMapping';
 export class RoleApi extends BaseLoopBackApi {
 
   constructor(
-    @Inject(Http) protected http: Http,
+    @Inject(HttpClient) protected http: HttpClient,
     @Inject(SDKModels) protected models: SDKModels,
     @Inject(LoopBackAuth) protected auth: LoopBackAuth,
-    @Inject(JSONSearchParams) protected searchParams: JSONSearchParams,
     @Optional() @Inject(ErrorHandler) protected errorHandler: ErrorHandler
   ) {
-    super(http,  models, auth, searchParams, errorHandler);
+    super(http,  models, auth, errorHandler);
   }
 
   /**
@@ -46,7 +44,7 @@ export class RoleApi extends BaseLoopBackApi {
    * This usually means the response is a `Role` object.)
    * </em>
    */
-  public findByIdPrincipals(id: any, fk: any): Observable<any> {
+  public findByIdPrincipals(id: any, fk: any, customHeaders?: Function): Observable<any> {
     let _method: string = "GET";
     let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
     "/Roles/:id/principals/:fk";
@@ -56,7 +54,7 @@ export class RoleApi extends BaseLoopBackApi {
     };
     let _postBody: any = {};
     let _urlParams: any = {};
-    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody);
+    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
     return result;
   }
 
@@ -73,7 +71,7 @@ export class RoleApi extends BaseLoopBackApi {
    *
    * This method returns no data.
    */
-  public destroyByIdPrincipals(id: any, fk: any): Observable<any> {
+  public destroyByIdPrincipals(id: any, fk: any, customHeaders?: Function): Observable<any> {
     let _method: string = "DELETE";
     let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
     "/Roles/:id/principals/:fk";
@@ -83,7 +81,7 @@ export class RoleApi extends BaseLoopBackApi {
     };
     let _postBody: any = {};
     let _urlParams: any = {};
-    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody);
+    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
     return result;
   }
 
@@ -107,7 +105,7 @@ export class RoleApi extends BaseLoopBackApi {
    * This usually means the response is a `Role` object.)
    * </em>
    */
-  public updateByIdPrincipals(id: any, fk: any, data: any = {}): Observable<any> {
+  public updateByIdPrincipals(id: any, fk: any, data: any = {}, customHeaders?: Function): Observable<any> {
     let _method: string = "PUT";
     let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
     "/Roles/:id/principals/:fk";
@@ -119,7 +117,7 @@ export class RoleApi extends BaseLoopBackApi {
       data: data
     };
     let _urlParams: any = {};
-    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody);
+    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
     return result;
   }
 
@@ -139,7 +137,7 @@ export class RoleApi extends BaseLoopBackApi {
    * This usually means the response is a `Role` object.)
    * </em>
    */
-  public getPrincipals(id: any, filter: LoopBackFilter = {}): Observable<any> {
+  public getPrincipals(id: any, filter: LoopBackFilter = {}, customHeaders?: Function): Observable<any> {
     let _method: string = "GET";
     let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
     "/Roles/:id/principals";
@@ -148,8 +146,8 @@ export class RoleApi extends BaseLoopBackApi {
     };
     let _postBody: any = {};
     let _urlParams: any = {};
-    if (filter) _urlParams.filter = filter;
-    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody);
+    if (typeof filter !== 'undefined' && filter !== null) _urlParams.filter = filter;
+    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
     return result;
   }
 
@@ -171,7 +169,7 @@ export class RoleApi extends BaseLoopBackApi {
    * This usually means the response is a `Role` object.)
    * </em>
    */
-  public createPrincipals(id: any, data: any = {}): Observable<any> {
+  public createPrincipals(id: any, data: any = {}, customHeaders?: Function): Observable<any> {
     let _method: string = "POST";
     let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
     "/Roles/:id/principals";
@@ -182,7 +180,7 @@ export class RoleApi extends BaseLoopBackApi {
       data: data
     };
     let _urlParams: any = {};
-    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody);
+    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
     return result;
   }
 
@@ -197,7 +195,7 @@ export class RoleApi extends BaseLoopBackApi {
    *
    * This method returns no data.
    */
-  public deletePrincipals(id: any): Observable<any> {
+  public deletePrincipals(id: any, customHeaders?: Function): Observable<any> {
     let _method: string = "DELETE";
     let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
     "/Roles/:id/principals";
@@ -206,7 +204,7 @@ export class RoleApi extends BaseLoopBackApi {
     };
     let _postBody: any = {};
     let _urlParams: any = {};
-    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody);
+    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
     return result;
   }
 
@@ -225,7 +223,7 @@ export class RoleApi extends BaseLoopBackApi {
    *
    *  - `count` – `{number}` - 
    */
-  public countPrincipals(id: any, where: any = {}): Observable<any> {
+  public countPrincipals(id: any, where: any = {}, customHeaders?: Function): Observable<any> {
     let _method: string = "GET";
     let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
     "/Roles/:id/principals/count";
@@ -234,8 +232,8 @@ export class RoleApi extends BaseLoopBackApi {
     };
     let _postBody: any = {};
     let _urlParams: any = {};
-    if (where) _urlParams.where = where;
-    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody);
+    if (typeof where !== 'undefined' && where !== null) _urlParams.where = where;
+    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
     return result;
   }
 
@@ -255,7 +253,7 @@ export class RoleApi extends BaseLoopBackApi {
    * This usually means the response is a `Role` object.)
    * </em>
    */
-  public patchOrCreate(data: any = {}): Observable<any> {
+  public patchOrCreate(data: any = {}, customHeaders?: Function): Observable<any> {
     let _method: string = "PATCH";
     let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
     "/Roles";
@@ -264,7 +262,7 @@ export class RoleApi extends BaseLoopBackApi {
       data: data
     };
     let _urlParams: any = {};
-    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody);
+    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
     return result;
   }
 
@@ -286,7 +284,7 @@ export class RoleApi extends BaseLoopBackApi {
    * This usually means the response is a `Role` object.)
    * </em>
    */
-  public patchAttributes(id: any, data: any = {}): Observable<any> {
+  public patchAttributes(id: any, data: any = {}, customHeaders?: Function): Observable<any> {
     let _method: string = "PATCH";
     let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
     "/Roles/:id";
@@ -297,7 +295,7 @@ export class RoleApi extends BaseLoopBackApi {
       data: data
     };
     let _urlParams: any = {};
-    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody);
+    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
     return result;
   }
 
@@ -319,7 +317,7 @@ export class RoleApi extends BaseLoopBackApi {
    * This usually means the response is a `Role` object.)
    * </em>
    */
-  public createManyPrincipals(id: any, data: any[] = []): Observable<any> {
+  public createManyPrincipals(id: any, data: any[] = [], customHeaders?: Function): Observable<any> {
     let _method: string = "POST";
     let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
     "/Roles/:id/principals";
@@ -330,7 +328,7 @@ export class RoleApi extends BaseLoopBackApi {
       data: data
     };
     let _urlParams: any = {};
-    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody);
+    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
     return result;
   }
 

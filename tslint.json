@@ -13,7 +13,7 @@
     "eofline": true,
     "forin": true,
     "interface-over-type-literal": true,
-    "import-blacklist": [true, "rxjs"],
+    "import-blacklist": [true],
     "import-spacing": true,
     "indent": [
       true,

@@ -50,6 +50,8 @@ export class Role implements RoleInterface {
     return {
       name: 'Role',
       plural: 'Roles',
+      path: 'Roles',
+      idName: 'id',
       properties: {
         "id": {
           name: 'id',
@@ -76,7 +78,10 @@ export class Role implements RoleInterface {
         principals: {
           name: 'principals',
           type: 'RoleMapping[]',
-          model: 'RoleMapping'
+          model: 'RoleMapping',
+          relationType: 'hasMany',
+                  keyFrom: 'id',
+          keyTo: 'roleId'
         },
       }
     }

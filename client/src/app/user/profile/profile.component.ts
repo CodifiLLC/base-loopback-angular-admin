@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
 import {Router, ActivatedRoute} from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { CustomUserApi, LoopBackAuth } from '../../shared/sdk/services';
 import {FlashMessageService} from '../../flash-message/flash-message.service';
 import {CustomUser} from '../../shared/sdk/models';

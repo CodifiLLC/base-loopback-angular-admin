@@ -1,3 +1,4 @@
+/* tslint:disable */
 /**
 * @module SDKModule
 * @author Jonathan Casarrubias <t:@johncasarrubias> <gh:jonathan-casarrubias>
@@ -33,13 +34,12 @@
 * export class AppModule { }
 *
 **/
-import { JSONSearchParams } from './services/core/search.params';
 import { ErrorHandler } from './services/core/error.service';
 import { LoopBackAuth } from './services/core/auth.service';
 import { LoggerService } from './services/custom/logger.service';
 import { SDKModels } from './services/custom/SDKModels';
 import { InternalStorage, SDKStorage } from './storage/storage.swaps';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CookieBrowser } from './storage/cookie.browser';
@@ -58,7 +58,7 @@ import { CustomUserApi } from './services/custom/CustomUser';
 *  3.- Progressive applications (Angular Mobile, Ionic, WebViews, etc)
 **/
 @NgModule({
-  imports:      [ CommonModule, HttpModule ],
+  imports:      [ CommonModule, HttpClientModule ],
   declarations: [ ],
   exports:      [ ],
   providers:    [
@@ -75,7 +75,6 @@ export class SDKBrowserModule {
       providers : [
         LoopBackAuth,
         LoggerService,
-        JSONSearchParams,
         SDKModels,
         EmailApi,
         RoleMappingApi,
@@ -97,3 +96,4 @@ export * from './lb.config';
 export * from './storage/storage.swaps';
 export { CookieBrowser } from './storage/cookie.browser';
 export { StorageBrowser } from './storage/storage.browser';
+

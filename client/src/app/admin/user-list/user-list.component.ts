@@ -2,6 +2,7 @@ import {FlashMessageService} from '../../flash-message/flash-message.service';
 import { Component, OnInit } from '@angular/core';
 import { CustomUserApi, RoleMappingApi, RoleApi } from '../../shared/sdk/services';
 import { CustomUser, LoopBackFilter, Role, RoleMapping } from '../../shared/sdk/models';
+import {flatMap} from 'rxjs/operators'
 
 @Component({
 	selector: 'app-user-list',
@@ -70,10 +71,10 @@ export class UserListComponent implements OnInit {
 			//find which rolemapping is attached to this user and role
 			this.roleMappingApi.findOne({
 				where: {principalId: user.id, principalType: 'USER', roleId: this.adminRole.id}
-			}).flatMap((rm: RoleMapping) => {
+			}).pipe(flatMap((rm: RoleMapping) => {
 				//if we round the matching role, remove it
 				return this.roleMappingApi.deleteById(rm.id);
-			}).subscribe(res => {
+			})).subscribe(res => {
 				//once removed, remove it from the user object
 				const roleToRemoveIdx = user.roles.findIndex(r => r.id === this.adminRole.id);
 				user.roles.splice(roleToRemoveIdx, 1);
