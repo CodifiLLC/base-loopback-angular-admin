@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
-import { BsDropdownModule, CollapseModule } from 'ngx-bootstrap';
+import {BsDropdownModule, CollapseModule, TabsModule} from 'ngx-bootstrap';
 
 import { LoggedInGuard } from './guards/login';
 import { SuperuserGuard } from './guards/superuser';
@@ -38,6 +38,7 @@ import {LoginPageService} from './login-page-service/login-page.service'
 		BrowserModule,
 		BsDropdownModule.forRoot(),
 		CollapseModule.forRoot(),
+		TabsModule.forRoot(),
 		FormsModule,
 		HttpModule,
 		routing,

@@ -45,11 +45,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
 			//if this is being used by the actual user, save the new token and redirect
 			if (this.user.id === this.userApi.getCurrentId()) {
-				const token = this.auth.getToken();
 				const roles = this.auth.getCurrentUserData().roles;
-				token.user = this.user;
-				token.user.roles = roles;
-				this.auth.setUser(token);
+				user.roles = roles
+				this.auth.setUser(user);
 				this.auth.save();
 			}
 		});
@@ -69,11 +67,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
 					this.user = user;
 					//if this is being used by the actual user, save the new token and redirect
 					if (this.user.id === this.userApi.getCurrentId()) {
-						const token = this.auth.getToken();
 						const roles = this.auth.getCurrentUserData().roles;
-						token.user = this.user;
-						token.user.roles = roles;
-						this.auth.setUser(token);
+						user.roles = roles;
+						this.auth.setUser(user);
 						this.auth.save();
 					}
 				});
