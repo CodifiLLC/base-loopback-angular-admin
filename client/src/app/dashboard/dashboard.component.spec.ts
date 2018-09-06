@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Observable } from 'rxjs/Rx';
+import { from } from 'rxjs';
 
 import { DashboardComponent } from './dashboard.component';
 import { LoopBackAuth } from '../shared/sdk/services';
@@ -17,7 +17,7 @@ describe('DashboardComponent', () => {
 			providers: [
 				{provide: LoopBackAuth, useValue: {}},
 				{provide: SocketService, useValue: {
-					watchEvent: jasmine.createSpy('watchEvent').and.returnValue(Observable.from([]))
+					watchEvent: jasmine.createSpy('watchEvent').and.returnValue(from([]))
 				}}
 			]
 		})

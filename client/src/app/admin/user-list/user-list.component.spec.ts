@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { By } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { Observable } from 'rxjs/Rx';
+import { Observable, of, empty, throwError } from 'rxjs';
 
 import { CustomUser, Role } from '../../shared/sdk/models';
 import { CustomUserApi, RoleMappingApi, RoleApi } from '../../shared/sdk/services';
@@ -36,12 +36,12 @@ describe('UserListComponent', () => {
 					patchAttributes: jasmine.createSpy('patchAttributes'),
 				}},
 				{provide: RoleApi, useValue: {
-					findOne: jasmine.createSpy('findOne').and.returnValue(Observable.of({}))
+					findOne: jasmine.createSpy('findOne').and.returnValue(of({}))
 				}},
 				{provide: RoleMappingApi, useValue: {
-					create: jasmine.createSpy('create').and.returnValue(Observable.empty()),
-					deleteById: jasmine.createSpy('deleteById').and.returnValue(Observable.empty()),
-					findOne: jasmine.createSpy('findOne').and.returnValue(Observable.of({}))
+					create: jasmine.createSpy('create').and.returnValue(empty()),
+					deleteById: jasmine.createSpy('deleteById').and.returnValue(empty()),
+					findOne: jasmine.createSpy('findOne').and.returnValue(of({}))
 				}},
 				{provide: FlashMessageService, useValue: {
 					showMessage: jasmine.createSpy('showMessage')
@@ -71,7 +71,7 @@ describe('UserListComponent', () => {
 		expect(userApi.find).not.toHaveBeenCalled();
 		expect(roleApi.findOne).not.toHaveBeenCalled();
 
-		userApi.find.and.returnValue(Observable.of(expectedUsers));
+		userApi.find.and.returnValue(of(expectedUsers));
 
 		fixture.detectChanges();
 		expect(userApi.find).toHaveBeenCalled();
@@ -84,7 +84,7 @@ describe('UserListComponent', () => {
 		expect(roleApi.findOne).not.toHaveBeenCalled();
 		const expectedErr = 'Test error';
 
-		userApi.find.and.returnValue(Observable.throw(new Error(expectedErr)));
+		userApi.find.and.returnValue(throwError(new Error(expectedErr)));
 
 		fixture.detectChanges();
 		expect(userApi.find).toHaveBeenCalled();
@@ -94,7 +94,7 @@ describe('UserListComponent', () => {
 	});
 
 	it('should bind users to the frontend', () => {
-		userApi.find.and.returnValue(Observable.of(expectedUsers));
+		userApi.find.and.returnValue(of(expectedUsers));
 
 		fixture.detectChanges();
 		expect(userApi.find).toHaveBeenCalled();
@@ -125,7 +125,7 @@ describe('UserListComponent', () => {
 	it('should search API for users on search', () => {
 		expect(userApi.find).not.toHaveBeenCalled();
 
-		userApi.find.and.returnValue(Observable.of(expectedUsers));
+		userApi.find.and.returnValue(of(expectedUsers));
 
 		component.searchString = 'test';
 		component.search();
@@ -161,7 +161,7 @@ describe('UserListComponent', () => {
 
 		expect(userApi.deleteById).not.toHaveBeenCalled();
 
-		userApi.deleteById.and.returnValue(Observable.of({}));
+		userApi.deleteById.and.returnValue(of({}));
 
 		component.deleteUser(expectedUsers[0]);
 
@@ -179,7 +179,7 @@ describe('UserListComponent', () => {
 		expect(userApi.deleteById).not.toHaveBeenCalled();
 
 		const expectedError = {message: 'failure'};
-		userApi.deleteById.and.returnValue(Observable.throw(expectedError));
+		userApi.deleteById.and.returnValue(throwError(expectedError));
 
 		component.deleteUser(expectedUsers[0]);
 
@@ -194,7 +194,7 @@ describe('UserListComponent', () => {
 
 		expect(userApi.deleteById).not.toHaveBeenCalled();
 
-		userApi.deleteById.and.returnValue(Observable.of({}));
+		userApi.deleteById.and.returnValue(of({}));
 
 		component.deleteUser(expectedUsers[0]);
 
@@ -218,11 +218,11 @@ describe('UserListComponent', () => {
 
 	it('should call CustomUserApi.patchAttributes on resetPassword (good password)', () => {
 		const expectedPassword = 'val';
-		spyOn(component, 'getRandomPassword').and.returnValue(expectedPassword);
+		spyOn(component as any, 'getRandomPassword').and.returnValue(expectedPassword);
 
 		expect(userApi.patchAttributes).not.toHaveBeenCalled();
 
-		userApi.patchAttributes.and.returnValue(Observable.of({}));
+		userApi.patchAttributes.and.returnValue(of({}));
 
 		component.resetPassword(expectedUsers[0]);
 
@@ -231,11 +231,11 @@ describe('UserListComponent', () => {
 	});
 
 	it('should call CustomUserApi.deleteById on delete and show message on error', () => {
-		spyOn(component, 'getRandomPassword').and.returnValue('sdf');
+		spyOn(component as any, 'getRandomPassword').and.returnValue('sdf');
 
 		expect(userApi.patchAttributes).not.toHaveBeenCalled();
 
-		userApi.patchAttributes.and.returnValue(Observable.throw({message: 'failure'}));
+		userApi.patchAttributes.and.returnValue(throwError({message: 'failure'}));
 
 		component.resetPassword(expectedUsers[0]);
 
@@ -269,8 +269,8 @@ describe('UserListComponent', () => {
 		component.adminRole = new Role({id: 99, name: 'adminTest'});
 
 		const matchingRoleMap = {id: 42};
-		roleMappingApi.findOne.and.returnValue(Observable.of(matchingRoleMap));
-		roleMappingApi.deleteById.and.returnValue(Observable.of({id: 1}));
+		roleMappingApi.findOne.and.returnValue(of(matchingRoleMap));
+		roleMappingApi.deleteById.and.returnValue(of({id: 1}));
 
 		const user = new CustomUser({
 			id: 1, firstName: '1', lastName: '2', email: 'a', password: 'b',
@@ -292,8 +292,8 @@ describe('UserListComponent', () => {
 
 		component.adminRole = new Role({id: 99, name: 'adminTest'});
 
-		roleMappingApi.findOne.and.returnValue(Observable.throw('error!!!'));
-		roleMappingApi.deleteById.and.returnValue(Observable.of({id: 1}));
+		roleMappingApi.findOne.and.returnValue(throwError('error!!!'));
+		roleMappingApi.deleteById.and.returnValue(of({id: 1}));
 
 		const user = new CustomUser({
 			id: 1, firstName: '1', lastName: '2', email: 'a', password: 'b',
@@ -314,8 +314,8 @@ describe('UserListComponent', () => {
 		component.adminRole = new Role({id: 99, name: 'adminTest'});
 
 		const matchingRoleMap = {id: 42};
-		roleMappingApi.findOne.and.returnValue(Observable.of(matchingRoleMap));
-		roleMappingApi.deleteById.and.returnValue(Observable.throw('error!!!!'));
+		roleMappingApi.findOne.and.returnValue(of(matchingRoleMap));
+		roleMappingApi.deleteById.and.returnValue(throwError('error!!!!'));
 
 		const user = new CustomUser({
 			id: 1, firstName: '1', lastName: '2', email: 'a', password: 'b',
@@ -336,7 +336,7 @@ describe('UserListComponent', () => {
 		component.adminRole = new Role({id: 99, name: 'adminTest'});
 		const user = new CustomUser({ id: 1, firstName: '1', lastName: '2', email: 'a', password: 'b' });
 
-		roleMappingApi.create.and.returnValue(Observable.of(component.adminRole));
+		roleMappingApi.create.and.returnValue(of(component.adminRole));
 
 		component.toggleAdminStatus(user);
 
@@ -353,7 +353,7 @@ describe('UserListComponent', () => {
 		component.adminRole = new Role({id: 99, name: 'adminTest'});
 		const user = new CustomUser({ id: 1, firstName: '1', lastName: '2', email: 'a', password: 'b' });
 
-		roleMappingApi.create.and.returnValue(Observable.throw('error'));
+		roleMappingApi.create.and.returnValue(throwError('error'));
 
 		component.toggleAdminStatus(user);
 

@@ -1,4 +1,4 @@
-import {Observable} from 'rxjs/Rx';
+import {Observable, of, throwError} from 'rxjs';
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -77,8 +77,8 @@ describe('LoginComponent', () => {
 
 	it('should call login on click', () => {
 
-		userApi.login.and.returnValue(Observable.of({user: {id: 1, email: 't@t.si', firstname: 'test', lastname: 'thing'}}));
-		userApi.getRoles.and.returnValue(Observable.of({id: 1}));
+		userApi.login.and.returnValue(of({user: {id: 1, email: 't@t.si', firstname: 'test', lastname: 'thing'}}));
+		userApi.getRoles.and.returnValue(of({id: 1}));
 
 		expect(userApi.login).not.toHaveBeenCalled();
 		component.login();
@@ -93,8 +93,8 @@ describe('LoginComponent', () => {
 	it('should redirect to specific page if pageservice has value', () => {
 		const requestedPage = 'test';
 
-		userApi.login.and.returnValue(Observable.of({user: {id: 1, email: 't@t.si', firstname: 'test', lastname: 'thing'}}));
-		userApi.getRoles.and.returnValue(Observable.of({id: 1}));
+		userApi.login.and.returnValue(of({user: {id: 1, email: 't@t.si', firstname: 'test', lastname: 'thing'}}));
+		userApi.getRoles.and.returnValue(of({id: 1}));
 		pageService.getPage.and.returnValue(requestedPage);
 
 		expect(userApi.login).not.toHaveBeenCalled();
@@ -109,7 +109,7 @@ describe('LoginComponent', () => {
 
 	it('should show error on failed login', () => {
 
-		userApi.login.and.returnValue(Observable.throw('test error'));
+		userApi.login.and.returnValue(throwError('test error'));
 
 		expect(userApi.login).not.toHaveBeenCalled();
 		component.login();

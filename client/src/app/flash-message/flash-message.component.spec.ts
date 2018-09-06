@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Observable } from 'rxjs/Rx';
+import { of, empty } from 'rxjs';
 
 import { FlashMessageComponent } from './flash-message.component';
 import { FlashMessageService } from './flash-message.service';
@@ -15,7 +15,7 @@ describe('FlashMessageComponent', () => {
 			declarations: [ FlashMessageComponent ],
 			providers: [
 				{provide: FlashMessageService, useValue: {
-					messagesToShow$: Observable.empty(),
+					messagesToShow$: empty(),
 					showMessage: jasmine.createSpy('showMessage')
 				}}
 			]
@@ -39,7 +39,7 @@ describe('FlashMessageComponent', () => {
 
 		const knownMessage = {message: 'a', messageClass: '1'};
 		//replace message stream with a known stream
-		flashMesageService.messagesToShow$ = Observable.of(knownMessage);
+		flashMesageService.messagesToShow$ = of(knownMessage);
 		spyOn(flashMesageService.messagesToShow$, 'subscribe').and.callThrough();
 		expect(flashMesageService.messagesToShow$.subscribe).not.toHaveBeenCalled();
 

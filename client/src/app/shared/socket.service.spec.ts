@@ -1,6 +1,6 @@
 /* tslint:disable:no-unused-variable */
 
-import {Subject} from 'rxjs/Subject';
+import {Subject} from 'rxjs';
 import * as io from 'socket.io-client';
 import { SocketService } from './socket.service';
 
@@ -119,7 +119,7 @@ describe('SocketService', () => {
 
 		const service = new SocketService();
 
-		spyOn(service, 'getSubjectForEvent').and.returnValue(subj);
+		spyOn(service as any, 'getSubjectForEvent').and.returnValue(subj);
 
 		const obs = service.watchEvent('test');
 		const values = [];
