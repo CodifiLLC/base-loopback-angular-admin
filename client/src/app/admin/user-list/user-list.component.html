@@ -6,11 +6,11 @@
 		{{displaySuccess}}
 	</div>
 	<form class="input-group" (ngSubmit)="search()" #searchForm="ngForm">
-		<span class="input-group-addon"><i class='fa fa-search'></i></span>
+		<span class="input-group-prepend"><span class="input-group-text"><i class='fa fa-search'></i></span></span>
 		<input type="text" class="form-control" placeholder="Search for..."
 			[(ngModel)]="searchString" name="search" />
-		<span class="input-group-btn">
-			<button class="btn btn-default" type="submit">Go!</button>
+		<span class="input-group-append">
+			<button class="btn btn-outline-secondary" type="submit">Go!</button>
 		</span>
 	</form>
 	<table class="table">
@@ -30,10 +30,10 @@
 				<td>{{user.lastName}}</td>
 				<td>{{user.email}}</td>
 				<td>
-					<a class="btn btn-default" (click)="deleteUser(user)" title="Delete"><i class='fa fa-trash-o'></i></a>
-					<a class="btn btn-default" (click)="resetPassword(user)" title="Reset Password"><i class="fa fa-undo"></i></a>
-					<a class="btn btn-default" [routerLink]="user.id" title="Profile"><i class="fa fa-user"></i></a>
-					<a class="btn btn-default" (click)="toggleAdminStatus(user)" title="Toggle Admin">
+					<a class="btn btn-outline-secondary" (click)="deleteUser(user)" title="Delete"><i class='fa fa-trash-o'></i></a>
+					<a class="btn btn-outline-secondary" (click)="resetPassword(user)" title="Reset Password"><i class="fa fa-undo"></i></a>
+					<a class="btn btn-outline-secondary" [routerLink]="user.id" title="Profile"><i class="fa fa-user"></i></a>
+					<a class="btn btn-outline-secondary" (click)="toggleAdminStatus(user)" title="Toggle Admin">
 						<i class="fa" [ngClass]="{'fa-star': userIsAdmin(user), 'fa-star-o': !userIsAdmin(user)}"></i>
 					</a>
 				</td>

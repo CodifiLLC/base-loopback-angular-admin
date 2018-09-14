@@ -1,46 +1,39 @@
-<nav class="navbar navbar-default navbar-static-top" role="navigation">
-	<div class="container-fluid">
-
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar" (click)="isCollapsed=!isCollapsed"
-					[attr.aria-expanded]="!isCollapsed">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" routerLink="/">
-				<img src="http://placehold.it/32x32?text=E" alt="Logo" class="nav-logo">
-				Echo
-			</a>
-		</div>
+<nav class="navbar navbar-default navbar-expand-md navbar-light bg-light" role="navigation">
+		<a class="navbar-brand" routerLink="/">
+			<img src="http://placehold.it/32x32?text=E" alt="Logo" class="nav-logo">
+			Echo
+		</a>
+		<button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar" (click)="isCollapsed=!isCollapsed"
+				[attr.aria-expanded]="!isCollapsed">
+			<span class="sr-only">Toggle navigation</span>
+			<span class="navbar-toggler-icon"></span>
+		</button>
 		<div id="navbar" class="collapse navbar-collapse" [collapse]="isCollapsed"
 			 [ngStyle]="{display: isCollapsed ? 'block' : 'none'}">
-			<ul class="nav navbar-nav navbar-top-links navbar-right">
+			<ul class="nav navbar-nav navbar-top-links ml-auto">
 				<!-- Superuser items -->
-				<li *ngIf="isSuperuser()">
-					<a class="admin-link" routerLink="admin/users">
+				<li class="nav-item" *ngIf="isSuperuser()">
+					<a class="admin-link nav-link" routerLink="admin/users">
 						<i class="fa fa-users"></i>
 						Users
 					</a>
 				</li>
 
 				<!-- House Settings -->
-				<li *ngIf="isLoggedIn()">
-					<a routerLink="/profile">
+				<li class="nav-item" *ngIf="isLoggedIn()">
+					<a class="nav-link" routerLink="/profile">
 						<i class="fa fa-cogs fa-fw"></i>
 						Profile
 					</a>
 				</li>
-				<li *ngIf="isLoggedIn()">
-					<a class='logout-link' (click)="logout()"><i class="fa fa-sign-out"></i>Log Out</a>
+				<li class="nav-item" *ngIf="isLoggedIn()">
+					<a class='logout-link nav-link' (click)="logout()"><i class="fa fa-sign-out"></i>Log Out</a>
 				</li>
-				<li *ngIf="!isLoggedIn()">
-					<a class='login-link' routerLink="/login"><i class="fa fa-sign-in"></i>Log In</a>
+				<li class="nav-item" *ngIf="!isLoggedIn()">
+					<a class='login-link nav-link' routerLink="/login"><i class="fa fa-sign-in"></i>Log In</a>
 				</li>
 			</ul>
 		</div>
-	</div>
 </nav>
 
 <div id="page-wrapper" class="container-fluid">

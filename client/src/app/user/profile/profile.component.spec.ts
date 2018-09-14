@@ -133,7 +133,7 @@ describe('ProfileComponent', () => {
 
 	it('should not update account if close button is pushed', () => {
 		fixture.detectChanges();
-		const cancelButton = fixture.debugElement.query(By.css('.btn-default'));
+		const cancelButton = fixture.debugElement.query(By.css('.btn-outline-secondary'));
 		spyOn(component, 'saveUser');
 		spyOn(component, 'cancel');
 
