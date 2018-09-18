@@ -1,5 +1,5 @@
 /* tslint:disable:no-unused-variable */
-import { Observable } from 'rxjs/Rx';
+import { Observable, of, throwError } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
@@ -62,7 +62,7 @@ describe('CreateAccountComponent', () => {
 	});
 
 	it('should create a new account', () => {
-		userApi.create.and.returnValue(Observable.of(
+		userApi.create.and.returnValue(of(
 			{id: 1, email: 'test@t.com', firstname: 'test', lastname: 'thing', password: 'test1234'}
 		));
 
@@ -76,7 +76,7 @@ describe('CreateAccountComponent', () => {
 	});
 
 	it('should show error when email already in use', () => {
-		userApi.create.and.returnValue(Observable.throw('test error'));
+		userApi.create.and.returnValue(throwError('test error'));
 
 		expect(userApi.create).not.toHaveBeenCalled();
 		component.createUser();

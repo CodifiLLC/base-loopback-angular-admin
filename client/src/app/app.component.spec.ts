@@ -9,7 +9,7 @@ import { CollapseModule } from 'ngx-bootstrap';
 import { AppComponent } from './app.component';
 import { FlashMessageService } from './flash-message/flash-message.service';
 import { CustomUserApi, LoopBackAuth } from './shared/sdk/services';
-import { Observable } from 'rxjs/Rx';
+import { of } from 'rxjs';
 
 @Component({
 	selector: 'app-flash-message',
@@ -69,7 +69,7 @@ describe('AppComponent', () => {
 
 		spyOn(router, 'navigateByUrl');
 
-		userApi.logout.and.returnValue(Observable.of({}));
+		userApi.logout.and.returnValue(of({}));
 		expect(userApi.logout).not.toHaveBeenCalled();
 		expect(router.navigateByUrl).not.toHaveBeenCalled();
 		fixture.componentInstance.logout();

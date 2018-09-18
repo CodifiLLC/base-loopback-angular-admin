@@ -1,11 +1,12 @@
 /* tslint:disable:no-unused-variable */
-import { Observable } from 'rxjs/Rx';
+import { Observable, empty, of, throwError } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { TabsModule } from 'ngx-bootstrap/tabs';
 
 import { ProfileComponent } from './profile.component';
 import { CustomUserApi, LoopBackAuth } from '../../shared/sdk/services';
@@ -30,7 +31,7 @@ describe('ProfileComponent', () => {
 					patchAttributes: jasmine.createSpy('patchAttributes'),
 					login: jasmine.createSpy('login'),
 					getCurrentId: jasmine.createSpy('getCurrentId'),
-					findById: jasmine.createSpy('findById').and.returnValue(Observable.empty())
+					findById: jasmine.createSpy('findById').and.returnValue(empty())
 				}},
 				{provide: LoopBackAuth, useValue: {
 					setUser: jasmine.createSpy('setUser'),
@@ -42,7 +43,7 @@ describe('ProfileComponent', () => {
 					navigateByUrl: jasmine.createSpy('navigateByUrl')
 				}},
 				{provide: ActivatedRoute, useValue: {
-					params: Observable.of({id: 1})
+					params: of({id: 1})
 				}},
 				{provide: Location, useValue: {
 					back: jasmine.createSpy('back')
@@ -51,7 +52,7 @@ describe('ProfileComponent', () => {
 					showMessage: jasmine.createSpy('showMessage')
 				}}
 			],
-			imports: [FormsModule, RouterTestingModule.withRoutes([]) ]
+			imports: [FormsModule, RouterTestingModule.withRoutes([]), TabsModule.forRoot() ]
 		})
 			.compileComponents();
 	}));
@@ -73,8 +74,8 @@ describe('ProfileComponent', () => {
 
 	it('should call findById in ngOnInit (params)', () => {
 		userApi.getCurrentId.and.returnValue(2);
-		userApi.findById.and.returnValue(Observable.of(expectedUser));
-		activatedRoute.params = Observable.of({id: 1});
+		userApi.findById.and.returnValue(of(expectedUser));
+		activatedRoute.params = of({id: 1});
 
 		expect(component.user.id).toBeUndefined();
 		fixture.detectChanges();
@@ -85,9 +86,9 @@ describe('ProfileComponent', () => {
 	});
 
 	it('should call findById in ngOnInit (no params)', () => {
-		activatedRoute.params = Observable.of({});
+		activatedRoute.params = of({});
 		userApi.getCurrentId.and.returnValue(1);
-		userApi.findById.and.returnValue(Observable.of(expectedUser));
+		userApi.findById.and.returnValue(of(expectedUser));
 
 		expect(component.user.id).toBeUndefined();
 		fixture.detectChanges();
@@ -112,7 +113,7 @@ describe('ProfileComponent', () => {
 		component.user = expectedUser;
 		fixture.detectChanges();
 
-		userApi.patchAttributes.and.returnValue(Observable.of(expectedUser));
+		userApi.patchAttributes.and.returnValue(of(expectedUser));
 		expect(userApi.patchAttributes).not.toHaveBeenCalled();
 		expect(authApi.save).not.toHaveBeenCalled();
 
@@ -132,7 +133,7 @@ describe('ProfileComponent', () => {
 
 	it('should not update account if close button is pushed', () => {
 		fixture.detectChanges();
-		const cancelButton = fixture.debugElement.query(By.css('.btn-default'));
+		const cancelButton = fixture.debugElement.query(By.css('.btn-outline-secondary'));
 		spyOn(component, 'saveUser');
 		spyOn(component, 'cancel');
 
@@ -158,9 +159,9 @@ describe('ProfileComponent', () => {
 		fixture.detectChanges();
 
 		userApi.login.and.returnValue(
-			Observable.of({user: {id: 1, email: 't@t.si', firstname: 'test', lastname: 'thing'}})
+			of({user: {id: 1, email: 't@t.si', firstname: 'test', lastname: 'thing'}})
 		);
-		userApi.patchAttributes.and.returnValue(Observable.of(expectedUser));
+		userApi.patchAttributes.and.returnValue(of(expectedUser));
 		userApi.getCurrentId.and.returnValue(expectedUser.id);
 
 		expect(userApi.login).not.toHaveBeenCalled();
@@ -183,8 +184,8 @@ describe('ProfileComponent', () => {
 
 		fixture.detectChanges();
 
-		userApi.login.and.returnValue(Observable.throw('test error'));
-		userApi.patchAttributes.and.returnValue(Observable.throw('test error'));
+		userApi.login.and.returnValue(throwError('test error'));
+		userApi.patchAttributes.and.returnValue(throwError('test error'));
 		userApi.getCurrentId.and.returnValue(expectedUser.id);
 
 		expect(userApi.login).not.toHaveBeenCalled();
